@@ -120,3 +120,8 @@ Feel to use the contact form <http://www.shopizer.com/contact.html> and share yo
 so we can send an invite to our Slack channel
 
 
+### Production
+./mvnw clean install
+./mvn package
+java -jar ROOT.jar
+
