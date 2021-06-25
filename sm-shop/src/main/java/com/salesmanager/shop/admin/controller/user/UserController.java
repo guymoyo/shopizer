@@ -801,6 +801,18 @@ public class UserController {
 			User dbUser = userService.getByUserName((String) session.getAttribute("username_reset"));
 			
 			if(dbUser!= null){
+
+				if(StringUtils.isBlank(dbUser.getAnswer1())
+						|| StringUtils.isBlank(dbUser.getAnswer2())
+						|| StringUtils.isBlank(dbUser.getAnswer3())) {
+
+					resp.setStatus(AjaxResponse.RESPONSE_STATUS_FAIURE);
+					resp.setStatusMessage(messages.getMessage("User.resetPassword.securityQtnNotSet", locale));
+					String returnString = resp.toJSONString();
+					final HttpHeaders httpHeaders= new HttpHeaders();
+					httpHeaders.setContentType(MediaType.APPLICATION_JSON_UTF8);
+					return new ResponseEntity<String>(returnString,httpHeaders,HttpStatus.OK);
+				}
 				
 				if(dbUser.getAnswer1().equals(answer1.trim()) && dbUser.getAnswer2().equals(answer2.trim()) && dbUser.getAnswer3().equals(answer3.trim())){
 					userLanguage = dbUser.getDefaultLanguage();	

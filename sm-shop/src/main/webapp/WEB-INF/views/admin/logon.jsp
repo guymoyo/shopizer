@@ -113,7 +113,7 @@
 					$('#answer1').val('');
 					$('#answer2').val('');
 					$('#answer3').val('');
-					var userName = $('#username').val();
+					var userName = $('#usernameForReset').val();
 		        if(!userName){
 				    alert("<s:message code="message.username.required" text="User name is required" />");
 			    }else{
@@ -122,7 +122,8 @@
 							dataType: "json",
 							url: "<c:url value="/admin/users/resetPassword.html" />",
 							data: "username="+ userName ,
-							success: function(response) { 
+							success: function(response) {
+								console.log(isc)
 								 var msg = isc.XMLTools.selectObjects(response, "/response/statusMessage");
 								 var status = isc.XMLTools.selectObjects(response, "/response/status");
 								 if(status==0 || status ==9999) {
@@ -385,7 +386,7 @@
 										<s:message code="label.username" text="Username" />
 									</label>
 									<div class="controls">
-										<input type="text" id="username" name="username"
+										<input type="text" id="usernameForReset" name="username"
 											placeholder="<s:message code="label.username" text="Username"/>">
 											
 
@@ -529,4 +530,5 @@
 
 			</div>
 	</body>
+	<jsp:include page="/common/adminLinks.jsp" />
 </html>
