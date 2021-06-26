@@ -97,7 +97,7 @@ Access the admin section at: http://localhost:8080/admin
 
 username : admin@shopizer.com
 
-password : password
+password : test123
 
 The instructions above will let you run the application with default settings and configurations.
 Please read the instructions on how to connect to MySQL, configure an email server and configure other subsystems
@@ -119,4 +119,9 @@ If you have interest in giving feedback or for participating to Shopizer project
 Feel to use the contact form <http://www.shopizer.com/contact.html> and share your email address
 so we can send an invite to our Slack channel
 
+
+### Production
+./mvnw clean install
+./mvn package
+java -jar ROOT.jar
 

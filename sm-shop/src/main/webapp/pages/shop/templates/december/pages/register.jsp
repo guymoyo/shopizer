@@ -121,7 +121,7 @@ function isFormValid() {
 										</form:select>
 									</div>
 									<div class="form-group login-page">
-										<label for="stateProvince"><s:message code="label.generic.stateprovince" text="State / Province"/> <span>*</span></label>
+										<label for="stateProvince"><s:message code="label.generic.stateprovince" text="State / Province / City"/> <span>*</span></label>
 										<s:message code="NotEmpty.customer.billing.stateProvince" text="State / Province is required" var="msgStateProvince"/>
 										<form:select path="billing.zone" id="customer_zones" class="form-control form-control-lg">
 										</form:select>
@@ -157,6 +157,12 @@ function isFormValid() {
 										<s:message code="message.password.repeat.required" text="Repeated password is required" var="msgRepeatPassword"/>
 							     		<form:password path="checkPassword" class="span8 required checkPassword form-control form-control-md" id="passwordAgain" title="${msgRepeatPassword}"/>
 								 		<form:errors path="checkPassword" cssClass="error" />
+									</div>
+									<div class="control-group form-group ogin-page">
+										<div class="controls">
+											<script src="https://www.google.com/recaptcha/api.js?hl=<c:out value="${requestScope.LANGUAGE.code}"/>" async defer></script>
+											<div class="g-recaptcha" data-sitekey="<c:out value="${recapatcha_public_key}"/>"></div>
+										</div>
 									</div>
 									<button type="submit" class="btn btn-default login-btn"><s:message code="label.register.createaccount" text="Create an account"/></button>
 								</form:form>						
