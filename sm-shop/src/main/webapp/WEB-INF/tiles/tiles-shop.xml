@@ -123,6 +123,20 @@
   		<put-attribute name="body" value="/pages/shop/templates/december/pages/register.jsp" />
   		<put-attribute name="footer" value="/pages/shop/templates/december/sections/footer.jsp" />
   	</definition>
+
+	<definition name="forgotPassword.december" template="/pages/shop/templates/december/catalogLayout.jsp">
+		<put-attribute name="header" value="/pages/shop/templates/december/sections/header.jsp" />
+		<put-attribute name="navbar" value="/pages/shop/templates/december/sections/navbar.jsp" />
+		<put-attribute name="body" value="/pages/shop/templates/december/pages/forgotPassword.jsp" />
+		<put-attribute name="footer" value="/pages/shop/templates/december/sections/footer.jsp" />
+	</definition>
+
+	<definition name="resetPassword.december" template="/pages/shop/templates/december/catalogLayout.jsp">
+		<put-attribute name="header" value="/pages/shop/templates/december/sections/header.jsp" />
+		<put-attribute name="navbar" value="/pages/shop/templates/december/sections/navbar.jsp" />
+		<put-attribute name="body" value="/pages/shop/templates/december/pages/resetPassword.jsp" />
+		<put-attribute name="footer" value="/pages/shop/templates/december/sections/footer.jsp" />
+	</definition>
   	  	
   	<definition name="customerAccount.*" template="/pages/shop/templates/{1}/catalogLayout.jsp">
   	  	<put-attribute name="header" value="/pages/shop/templates/{1}/sections/header.jsp" />

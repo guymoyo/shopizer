@@ -38,6 +38,8 @@ public interface ControllerConstants
             final static String review="review";
             final static String register="register";
             final static String changePassword="customerPassword";
+            final static String forgotPassword="forgotPassword";
+            final static String resetPassword="resetPassword";
             final static String customerOrders="customerOrders";
             final static String customerOrder="customerOrder";
             final static String Billing="customerAddress";

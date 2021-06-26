@@ -161,7 +161,7 @@ public class CustomerFacadeImpl implements CustomerFacade {
 	}
 
 	@Async
-	private void resetPasswordRequest(Customer customer, String resetLink, MerchantStore store, Locale locale)
+	void resetPasswordRequest(Customer customer, String resetLink, MerchantStore store, Locale locale)
 			throws Exception {
 		try {
 
