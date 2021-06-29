@@ -20,6 +20,11 @@ response.setDateHeader ("Expires", -1);
 			<div class="login-area ptb-80">
 				<div class="container">
 					<div class="row">
+						<c:if test="${ShowMsgPwdReset==true}">
+							<div  class="alert-success success">
+								<span><s:message code="label.customer.showmsgpwdreset" text="Your Password has been change"/>.</span>
+							</div>
+						</c:if>
 						<div class=" col-lg-6 col-md-6 col-sm-6 col-xs-12">
 							<div class="login-title">
 								<h3><s:message code="label.customer.registered" text="Registered customer"/></h3>

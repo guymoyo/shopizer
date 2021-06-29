@@ -34,6 +34,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import springfox.documentation.annotations.ApiIgnore;
 
 import javax.inject.Inject;
@@ -126,7 +127,8 @@ public class CustomerForgotPasswordController extends AbstractController {
 			@ModelAttribute("passwordRequest") @Valid PasswordRequest passwordRequest,
 			@PathVariable String store, @PathVariable String token, @ApiIgnore MerchantStore merchantStore,
 			@ApiIgnore Language language, BindingResult bindingResult, Model model,
-			HttpServletRequest request, HttpServletResponse response, final Locale locale) {
+			HttpServletRequest request, HttpServletResponse response, final Locale locale,
+			RedirectAttributes redirectAttributes) {
 
 		// validate password
 		if (StringUtils.isBlank(passwordRequest.getPassword())
@@ -145,6 +147,7 @@ public class CustomerForgotPasswordController extends AbstractController {
 			return populateModel(model, e.getMessage(), store, token);
 		}
 
+		redirectAttributes.addFlashAttribute("ShowMsgPwdReset", true);
 		return "redirect:/shop/customer/customLogon.html";
 	}
 
