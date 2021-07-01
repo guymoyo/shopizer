@@ -139,8 +139,7 @@ public class CustomerAccountController extends AbstractController {
 	 */
 	@RequestMapping(value="/customLogon.html", method=RequestMethod.GET)
 	public String displayLogon(Model model, HttpServletRequest request,
-							   HttpServletResponse response,
-							   @ModelAttribute("ShowMsgPwdReset") final boolean ShowMsgPwdReset) throws Exception {
+							   HttpServletResponse response) throws Exception {
 		
 
 	    MerchantStore store = getSessionAttribute(Constants.MERCHANT_STORE, request);
@@ -150,7 +149,6 @@ public class CustomerAccountController extends AbstractController {
 		
 		/** template **/
 		StringBuilder template = new StringBuilder().append(ControllerConstants.Tiles.Customer.customerLogon).append(".").append(store.getStoreTemplate());
-		model.addAttribute("ShowMsgPwdReset", ShowMsgPwdReset);
 		return template.toString();
 		
 	}

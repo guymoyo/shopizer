@@ -147,7 +147,6 @@ public class CustomerForgotPasswordController extends AbstractController {
 			return populateModel(model, e.getMessage(), store, token);
 		}
 
-		redirectAttributes.addFlashAttribute("ShowMsgPwdReset", true);
 		return "redirect:/shop/customer/customLogon.html";
 	}
 
