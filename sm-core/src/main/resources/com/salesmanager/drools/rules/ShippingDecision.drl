@@ -6,20 +6,10 @@ global com.salesmanager.core.business.modules.integration.shipping.impl.Decision
 
 dialect  "mvel"
 
-rule "Shipping decision Canada Post"
+rule "Shipping custom Quotes Rules"
     when
-        ShippingInputParameters(weight < 62)
-        ShippingInputParameters(size < 66)
-        ShippingInputParameters(country == "CA")
+        ShippingInputParameters(weight > 0)
     then
-        decision.setModuleName("canadapost");
+        decision.setModuleName("customQuotesRules");
 end
 
-rule "Shipping decision Home Delivery"
-    when
-        ShippingInputParameters(weight > 62 || size > 66)
-        ShippingInputParameters(country == "CA")
-        ShippingInputParameters(province == "QC")
-    then
-        decision.setModuleName("priceByDistance");
-end
