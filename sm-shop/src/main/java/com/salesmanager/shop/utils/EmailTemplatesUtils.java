@@ -10,6 +10,7 @@ import com.salesmanager.core.model.customer.Customer;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.order.Order;
 import com.salesmanager.core.model.order.OrderTotal;
+import com.salesmanager.core.model.order.OrderTotalType;
 import com.salesmanager.core.model.order.orderproduct.OrderProduct;
 import com.salesmanager.core.model.order.orderstatus.OrderStatusHistory;
 import com.salesmanager.core.model.reference.country.Country;
@@ -194,7 +195,11 @@ public class EmailTemplatesUtils {
 		    		   		orderTable.append(TD);
 		    		   			orderTable.append("<strong>");
 
-		    		   			orderTable.append(pricingService.getDisplayAmount(total.getValue(), merchantStore));
+		    		   			if (OrderTotalType.SHIPPING.equals(total.getOrderTotalType())){
+									orderTable.append(pricingService.getDisplayAmount(total.getApproximatifValue(), merchantStore));
+								}else {
+									orderTable.append(pricingService.getDisplayAmount(total.getValue(), merchantStore));
+								}
 
 	    		   				orderTable.append("</strong>");
 		    		   		orderTable.append(CLOSING_TD);

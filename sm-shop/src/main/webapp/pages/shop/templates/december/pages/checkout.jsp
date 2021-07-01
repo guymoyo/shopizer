@@ -631,7 +631,7 @@ function initPayment(paymentSelection) {
 										    <span id="error-customer.billing.lastName" class="error"></span>
 										</div>
 									</div>
-									<div class="col-md-12">
+									<div class="col-md-12 hidden">
 										<div class="checkout-form-list">
 											<label><s:message code="label.customer.billing.company" text="Billing company"/></label>
 										    <form:input id="customer.billing.company" cssClass="" path="customer.billing.company"/>
@@ -653,12 +653,11 @@ function initPayment(paymentSelection) {
 									</div>
 									</c:if>
 									<div class="col-md-12">
-										<div class="checkout-form-list">
-											<label><s:message code="label.generic.streetaddress" text="Street address"/> <span class="required">*</span></label>
-										    <s:message code="NotEmpty.customer.billing.address" text="Address is required" var="msgAddress"/>
-										    <form:input id="customer.billing.address" cssClass="${cssClass}" path="customer.billing.address" title="${msgAddress}" disabled="${fieldDisabled}"/><!-- geo locate -->
-										    <form:errors path="customer.billing.address" cssClass="error" />
-										    <span id="error-customer.billing.address" class="error"></span>
+										<div class="country-select">
+											<label><s:message code="label.generic.country" text="Country"/> <span class="required">*</span></label>
+											<form:select cssClass="billing-country-list" path="customer.billing.country" style="background-color: rgb(255, 255, 255);">
+												<form:options items="${countries}" itemValue="isoCode" itemLabel="name"/>
+											</form:select>
 										</div>
 									</div>
 									<div class="col-md-12">
@@ -667,18 +666,19 @@ function initPayment(paymentSelection) {
 											<s:message code="NotEmpty.customer.billing.city" text="City is required" var="msgCity"/>
 											<form:input id="customer.billing.city" cssClass="${cssClass}" path="customer.billing.city" title="${msgCity}" disabled="${fieldDisabled}"/>
 											<form:errors path="customer.billing.city" cssClass="error" />
-										    <span id="error-customer.billing.city" class="error"></span>
+											<span id="error-customer.billing.city" class="error"></span>
 										</div>
 									</div>
 									<div class="col-md-12">
-										<div class="country-select">
-											<label><s:message code="label.generic.country" text="Country"/> <span class="required">*</span></label>
-										    <form:select cssClass="billing-country-list" path="customer.billing.country" style="background-color: rgb(255, 255, 255);">
-											  	<form:options items="${countries}" itemValue="isoCode" itemLabel="name"/>
-										     </form:select>										
+										<div class="checkout-form-list">
+											<label><s:message code="label.generic.streetaddress" text="Street address"/> <span class="required">*</span></label>
+										    <s:message code="NotEmpty.customer.billing.address" text="Address is required" var="msgAddress"/>
+										    <form:input id="customer.billing.address" cssClass="${cssClass}" path="customer.billing.address" title="${msgAddress}" disabled="${fieldDisabled}"/><!-- geo locate -->
+										    <form:errors path="customer.billing.address" cssClass="error" />
+										    <span id="error-customer.billing.address" class="error"></span>
 										</div>
 									</div>
-									<div class="col-md-6">
+									<div class="col-md-6 hidden">
 										<div class="checkout-form-list zone-select">
 											<label><s:message code="label.generic.stateprovince" text="State / Province"/> <span class="required">*</span></label>										
 											<form:select cssClass="zone-list" id="billingStateList" path="customer.billing.zone"/>
@@ -688,11 +688,11 @@ function initPayment(paymentSelection) {
 											<span id="error-customer.billing.stateProvince" class="error"></span>
 										</div>
 									</div>
-									<div class="col-md-6">
+									<div class="col-md-6 hidden">
 										<div class="checkout-form-list">
 											<label><s:message code="label.generic.postalcode" text="Postal code"/> <span class="required">*</span></label>										
 											<s:message code="NotEmpty.customer.billing.postalCode" text="Postal code is required" var="msgPostalCode"/>
-											<form:input id="billingPostalCode" cssClass="${cssClass} billing-postalCode" path="customer.billing.postalCode" title="${msgPostalCode}"/>
+											<form:input id="billingPostalCode" value="0000" cssClass="${cssClass} billing-postalCode" path="customer.billing.postalCode" title="${msgPostalCode}"/>
 											<form:errors path="customer.billing.postalCode" cssClass="error" />
 											<span id="error-customer.billing.postalCode" class="error"></span>
 										</div>
@@ -753,7 +753,7 @@ function initPayment(paymentSelection) {
 									      		<form:input id="customer.delivery.name" cssClass="required" path="customer.delivery.lastName" title="${msgShippingLastName}"/>
 											</div>
 										</div>
-										<div class="col-md-12">
+										<div class="col-md-12 hidden">
 											<div class="checkout-form-list">
 												<label><s:message code="label.customer.shipping.company" text="Shipping company"/></label>
 												<form:input id="customer.delivery.company" cssClass="" path="customer.delivery.company"/>
@@ -782,7 +782,7 @@ function initPayment(paymentSelection) {
 										     </form:select>									
 										</div>
 									</div>
-									<div class="col-md-6">
+									<div class="col-md-6 hidden">
 										<div class="checkout-form-list zone-select">
 											<label><s:message code="label.customer.shipping.zone" text="Shipping state / province"/> <span class="required">*</span></label>										
 											<form:select cssClass="zone-list" id="deliveryStateList" path="customer.delivery.zone"/>
@@ -790,11 +790,11 @@ function initPayment(paymentSelection) {
 											<form:input  class="required" id="deliveryStateProvince"  maxlength="100" name="shippingStateProvince" path="customer.delivery.stateProvince" title="${msgShippingState}"/>
 										</div>
 									</div>
-									<div class="col-md-6">
+									<div class="col-md-6 hidden">
 											<div class="checkout-form-list">
 												<label><s:message code="label.customer.shipping.postalcode" text="Shipping postal code"/> <span class="required">*</span></label>										
 												<s:message code="NotEmpty.customer.shipping.postalCode" text="Shipping postal code should not be empty" var="msgShippingPostal"/>
-											    <form:input id="deliveryPostalCode" cssClass="required delivery-postalCode" path="customer.delivery.postalCode" title="${msgShippingPostal}"/>
+											    <form:input id="deliveryPostalCode" value="0000" cssClass="required delivery-postalCode" path="customer.delivery.postalCode" title="${msgShippingPostal}"/>
 											</div>
 									</div>
 								
@@ -873,7 +873,7 @@ function initPayment(paymentSelection) {
 								        			<c:when test="${fn:length(shippingQuote.shippingOptions)>0}">
 								       				<c:if test="${shippingQuote.shippingReturnCode=='NO_POSTAL_CODE'}">
 							 							<br/>
-							 							<font color="orange"><s:message code="label.shipping.nopostalcode" text="A shipping quote will be available after filling the postal code"/></font>
+							 							<font color="orange"><s:message code="label.shipping.nopostalcode" text="A shipping quote will be available after filling the country"/></font>
 							 							<br/><br/>
 							 						</c:if>	
 													<table id="shippingOptions">

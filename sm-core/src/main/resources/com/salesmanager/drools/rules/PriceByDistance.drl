@@ -4,9 +4,130 @@ import com.salesmanager.core.business.modules.integration.shipping.impl.Shipping
 
 global com.salesmanager.core.business.modules.integration.shipping.impl.DecisionResponse decision;
 
+/*1:  la * côte d'ivoire : 10€ / kg            ~duree~ : 1semaine.
+2- le Sénégal : 5,5€ /kg....... 4 jours.
+3- le Burkina fasso : 11$ /kg.....5 jours.
+4- le Congo kinsha : 11$ /kg....4jours.
+5- le congo Brazzaville : 14$ / kg......... 4 jours
+6- le gabon : 14€ / kg........ 1 semaine.
+7- le tchad : 8$ /kg....... 1 semaine
+8-  le benin : 11€ /kg..... 1 semaine
+9- le Togo : 11€ /kg ....... 1 semaine.
+10- le Mali 10$ /kg........... 1 semaine.
+11: la Guinée conakry : 9,5$ /kg............1 semaine.
+12- la Mauritanie : 8€ /kg.......1 à 2 semaines.
+13-  le Nigeria : 7$ /kg......1 semaine.
+14- le Cameroun : 8,5$ /kg..... 1semaine.*/
+
 dialect  "mvel"
 
-rule "530 kilometers or less"
+rule "TEST"
+    when
+        shp:ShippingInputParameters(country == 'FR' || country == 'CA' || country == 'CH')
+    then
+        decision.setCustomPrice((shp.weight * 3)+"");
+end
+
+rule "COTE IVOIRE"
+    when
+        shp:ShippingInputParameters(country == 'CI')
+    then
+        decision.setCustomPrice((shp.weight*6535)+"");
+end
+
+rule "SENEGAL"
+    when
+        shp:ShippingInputParameters(country == 'SN')
+    then
+        decision.setCustomPrice((shp.weight*3594)+"");
+end
+
+rule "BURKINA FASSO"
+    when
+        shp:ShippingInputParameters(country == 'BF')
+    then
+        decision.setCustomPrice((shp.weight*6062)+"");
+end
+
+rule "CONGO KINSHA"
+    when
+        shp:ShippingInputParameters(country == 'CD')
+    then
+        decision.setCustomPrice((shp.weight*6062)+"");
+end
+
+rule "CONGO BRAZZAVILLE"
+    when
+        shp:ShippingInputParameters(country == 'CG')
+    then
+        decision.setCustomPrice((shp.weight*7715)+"");
+end
+
+rule "GABON"
+    when
+        shp:ShippingInputParameters(country == 'GA')
+    then
+        decision.setCustomPrice((shp.weight*7715)+"");
+end
+
+rule "TCHAD"
+    when
+        shp:ShippingInputParameters(country == 'TD')
+    then
+        decision.setCustomPrice((shp.weight*4408)+"");
+end
+
+rule "BENIN"
+    when
+        shp:ShippingInputParameters(country == 'BG')
+    then
+        decision.setCustomPrice((shp.weight*6062)+"");
+end
+
+rule "TOGO"
+    when
+        shp:ShippingInputParameters(country == 'TG')
+    then
+        decision.setCustomPrice((shp.weight*6062)+"");
+end
+
+rule "MALI"
+    when
+        shp:ShippingInputParameters(country == 'ML')
+    then
+        decision.setCustomPrice((shp.weight*5511)+"");
+end
+
+rule "GUINEE CONAKRY"
+    when
+        shp:ShippingInputParameters(country == 'GN')
+    then
+        decision.setCustomPrice((shp.weight*5235)+"");
+end
+
+rule "MAURITANIE"
+    when
+        shp:ShippingInputParameters(country == 'MR')
+    then
+        decision.setCustomPrice((shp.weight*4408)+"");
+end
+
+rule "NIGERIA"
+    when
+        shp:ShippingInputParameters(country == 'NG')
+    then
+        decision.setCustomPrice((shp.weight*3857)+"");
+end
+
+rule "CAMEROUN"
+    when
+        shp:ShippingInputParameters(country == 'CM')
+    then
+        decision.setCustomPrice((shp.weight*4684)+"");
+end
+
+
+/*rule "530 kilometers or less"
     when
         ShippingInputParameters(distance <= 530)
     then
@@ -18,4 +139,4 @@ rule "3550 kilometers or less"
         ShippingInputParameters(distance <=3550)
     then
         decision.setCustomPrice("140");
-end
+end*/

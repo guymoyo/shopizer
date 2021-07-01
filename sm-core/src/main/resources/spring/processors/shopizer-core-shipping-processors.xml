@@ -18,7 +18,7 @@
 				distance calculation and requires google api keys to be configured below. 
 			 -->
 			 
-			<ref bean="shippingDistancePreProcessor"/>
+			<!--<ref bean="shippingDistancePreProcessor"/>-->
 
 			<!-- 
 				Used drules decision tables to decide at runtime which module the system will use
@@ -41,7 +41,7 @@
 		<!-- Shipping post-processors -->
 		<util:list id="shippingModulePostProcessors" value-type="com.salesmanager.core.business.modules.integration.shipping.model.ShippingQuotePrePostProcessModule">
 			<!-- Not configured by default, should be configured to be used -->
-			<ref bean="storePickUp"/><!-- defined in core-modules -->
+			<!--<ref bean="storePickUp"/>--><!-- defined in core-modules -->
 		</util:list>
 
 	

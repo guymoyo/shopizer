@@ -50,6 +50,9 @@ public class OrderTotal extends SalesManagerEntity<Long, OrderTotal> {
 	
 	@Column (name ="VALUE", precision=15, scale=4, nullable=false )
 	private BigDecimal value;
+
+	@Column (name ="APPROXIMATIF_VALUE" )
+	private BigDecimal approximatifValue;
 	
 	@Column (name ="MODULE", length=60 , nullable=true )
 	private String module;
@@ -103,6 +106,14 @@ public class OrderTotal extends SalesManagerEntity<Long, OrderTotal> {
 
 	public void setValue(BigDecimal value) {
 		this.value = value;
+	}
+
+	public BigDecimal getApproximatifValue() {
+		return approximatifValue;
+	}
+
+	public void setApproximatifValue(BigDecimal approximatifValue) {
+		this.approximatifValue = approximatifValue;
 	}
 
 	public String getModule() {

@@ -325,13 +325,19 @@ public class OrderServiceImpl  extends SalesManagerEntityServiceImpl<Long, Order
 	
 	            orderTotals.add(shippingSubTotal);
 
-            if(!summary.getShippingSummary().isFreeShipping()) {
+	            //TODO make it Configurable, when shipping always free
+            /*if(!summary.getShippingSummary().isFreeShipping()) {
                 shippingSubTotal.setValue(summary.getShippingSummary().getShipping());
                 grandTotal=grandTotal.add(summary.getShippingSummary().getShipping());
             } else {
                 shippingSubTotal.setValue(new BigDecimal(0));
                 grandTotal=grandTotal.add(new BigDecimal(0));
-            }
+            }*/
+
+            // Set it to approximatif value, just to show the shipping price to the user
+            shippingSubTotal.setValue(new BigDecimal(0));
+            shippingSubTotal.setApproximatifValue(summary.getShippingSummary().getShipping());
+            grandTotal=grandTotal.add(new BigDecimal(0));
 
             //check handling fees
             shippingConfiguration = shippingService.getShippingConfiguration(store);
