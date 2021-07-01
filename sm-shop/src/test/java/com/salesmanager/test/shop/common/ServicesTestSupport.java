@@ -48,7 +48,7 @@ public class ServicesTestSupport {
     protected TestRestTemplate testRestTemplate;
 
     protected HttpHeaders getHeader() {
-        return getHeader("admin@shopizer.com", "password");
+        return getHeader("admin@shopizer.com", "test123");
     }
 
     protected HttpHeaders getHeader(final String userName, final String password) {

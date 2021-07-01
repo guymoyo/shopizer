@@ -97,7 +97,7 @@ Access the admin section at: http://localhost:8080/admin
 
 username : admin@shopizer.com
 
-password : password
+password : test123
 
 The instructions above will let you run the application with default settings and configurations.
 Please read the instructions on how to connect to MySQL, configure an email server and configure other subsystems
