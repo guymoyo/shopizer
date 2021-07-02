@@ -54,8 +54,8 @@ public class OrderProductDownloadUrlTag extends RequestContextAwareTag {
 
 			StringBuilder filePath = new StringBuilder();
 			
-			filePath.append(filePathUtils.buildStoreUri(merchantStore,request));
-			
+			filePath.append(filePathUtils.buildBaseUrl(request.getContextPath(), merchantStore));
+
 			filePath
 				.append(filePathUtils.buildOrderDownloadProductFilePath(merchantStore, this.getProductDownload(), this.getOrderId())).toString();
 

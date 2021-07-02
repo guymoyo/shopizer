@@ -167,7 +167,7 @@ public class FilePathUtils {
 	}
 
 	public String validUrl(final String url) {
-		if (!StringUtils.isBlank(url) && !url.startsWith(HTTP) && !url.startsWith(HTTP)) {
+		if (!StringUtils.isBlank(url) && !url.startsWith(HTTP) && !url.startsWith(HTTPS)) {
 			return HTTPS + url;
 		}
 		return url;
@@ -182,6 +182,9 @@ public class FilePathUtils {
 	public String buildBaseUrl(String contextPath, MerchantStore store) {
 		String normalizePath = normalizePath(contextPath);
 		String scheme = getScheme(store);
+		if(StringUtils.isBlank(normalizePath)) {
+			return scheme;
+		}
 		return scheme + SLASH + normalizePath;
 	}
 
