@@ -21,6 +21,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -140,14 +141,15 @@ public class ShoppingOrderController extends AbstractController {
 	@Inject
 	private ProductService productService;
 	
-	//@Inject
-	//private PasswordEncoder passwordEncoder;
+	@Inject
+	private PasswordEncoder passwordEncoder;
 
 	@Inject
 	private EmailTemplatesUtils emailTemplatesUtils;
 	
 	@Inject
 	private OrderProductDownloadService orderProdctDownloadService;
+
 	
 	@SuppressWarnings("unused")
 	@RequestMapping("/checkout.html")
@@ -553,7 +555,10 @@ public class ShoppingOrderController extends AbstractController {
 				if(authCustomer==null) {//not authenticated, create a new volatile user
 					modelCustomer = customerFacade.getCustomerModel(customer, store, language);
 					customerFacade.setCustomerModelDefaultProperties(modelCustomer, store);
-					userName = modelCustomer.getNick();
+					//userName = modelCustomer.getNick();
+					password = UserReset.generateRandomString();
+					String encodedPassword = passwordEncoder.encode(password);
+					modelCustomer.setPassword(encodedPassword);
 					LOGGER.debug( "About to persist volatile customer to database." );
 					if(modelCustomer.getDefaultLanguage() == null) {
 						modelCustomer.setDefaultLanguage(languageService.toLanguage(locale));
@@ -624,7 +629,7 @@ public class ShoppingOrderController extends AbstractController {
 			        	//already authenticated
 			        } else {
 				        //authenticate
-				        customerFacade.authenticate(modelCustomer, userName, password);
+				        customerFacade.authenticate(modelCustomer, modelCustomer.getNick(), password);
 				        super.setSessionAttribute(Constants.CUSTOMER, modelCustomer, request);
 			        }
 	    		}
@@ -633,7 +638,7 @@ public class ShoppingOrderController extends AbstractController {
 				if(order.getCustomer().getId()==null || order.getCustomer().getId().longValue()==0) {
 					//send email for new customer
 					customer.setPassword(password);//set clear password for email
-					customer.setUserName(userName);
+					customer.setUserName(modelCustomer.getNick());
 					emailTemplatesUtils.sendRegistrationEmail( customer, store, locale, request.getContextPath() );
 				}
 	    		

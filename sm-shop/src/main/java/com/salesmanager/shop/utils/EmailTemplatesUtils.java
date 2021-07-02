@@ -292,7 +292,8 @@ public class EmailTemplatesUtils {
 	           templateTokens.put(EmailConstants.EMAIL_CUSTOMER_PASSWORD, customer.getPassword());
 
 	           //shop url
-	           String customerUrl = filePathUtils.buildStoreUri(merchantStore, contextPath);
+			   contextPath = "shop/customer/customLogon.html";
+	           String customerUrl = filePathUtils.buildBaseUrl(contextPath, merchantStore);
 	           templateTokens.put(EmailConstants.CUSTOMER_ACCESS_URL, customerUrl);
 
 	           Email email = new Email();
