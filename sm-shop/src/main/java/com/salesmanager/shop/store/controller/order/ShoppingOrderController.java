@@ -564,7 +564,7 @@ public class ShoppingOrderController extends AbstractController {
 					modelCustomer = customerFacade.populateCustomerModel(authCustomer, customer, store, language);
 				}
 			} catch(Exception e) {
-				throw new ServiceException(e);
+				throw new ServiceException(ServiceException.EXCEPTION_ANONYMOUS_USER_EXIST, e.getMessage(), "message.anonymous.user.exist");
 			}
 	        
            
@@ -627,14 +627,15 @@ public class ShoppingOrderController extends AbstractController {
 				        customerFacade.authenticate(modelCustomer, userName, password);
 				        super.setSessionAttribute(Constants.CUSTOMER, modelCustomer, request);
 			        }
-		        	//send new user registration template
-					if(order.getCustomer().getId()==null || order.getCustomer().getId().longValue()==0) {
-						//send email for new customer
-						customer.setPassword(password);//set clear password for email
-						customer.setUserName(userName);
-						emailTemplatesUtils.sendRegistrationEmail( customer, store, locale, request.getContextPath() );
-					}
 	    		}
+
+				//send new user registration template
+				if(order.getCustomer().getId()==null || order.getCustomer().getId().longValue()==0) {
+					//send email for new customer
+					customer.setPassword(password);//set clear password for email
+					customer.setUserName(userName);
+					emailTemplatesUtils.sendRegistrationEmail( customer, store, locale, request.getContextPath() );
+				}
 	    		
 				//send order confirmation email to customer
 				emailTemplatesUtils.sendOrderEmail(modelCustomer.getEmailAddress(), modelCustomer, modelOrder, locale, language, store, request.getContextPath());
@@ -960,7 +961,10 @@ public class ShoppingOrderController extends AbstractController {
             		} else {
             			model.addAttribute("errorMessages", paymentDeclinedMessage);
             		}
-            	}
+            	}else if(se.getExceptionType()==ServiceException.EXCEPTION_ANONYMOUS_USER_EXIST) {
+					String messageLabel = messages.getMessage(se.getMessageCode(), locale, "message.anonymous.user.exist");
+					model.addAttribute("errorMessages", messageLabel);
+				}
             	
             	
             	
