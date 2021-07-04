@@ -38,6 +38,14 @@
     		log('Open cart');
     		displayMiniCart();
     	});
+
+		/** buy now **/
+		$(".buyNow").click(function(){
+			addToCart($(this).attr("productId"));
+			$( document ).ajaxComplete(function() {
+				window.location.href = getContextPath() + '/shop/cart/shoppingCart.html';
+			});
+		});
 		
 	}
 	
