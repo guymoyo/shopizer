@@ -242,7 +242,7 @@ public class ProductPriceUtils {
 		}
 	    currencyInstance.setCurrency(currency);
 		
-	    
+	    //TODO: copnvert to cfa
 	    return currencyInstance.format(amount.doubleValue());
 		
 
@@ -321,7 +321,7 @@ public class ProductPriceUtils {
 				.toString(DECIMALCOUNT)));
 		nf.setCurrency(curr);
 
-
+		//TODO: copnvert to cfa
 		return nf.format(amount);
 	}
 

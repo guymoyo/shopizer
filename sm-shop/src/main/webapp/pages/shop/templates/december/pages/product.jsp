@@ -129,10 +129,10 @@
 												<c:choose>
 													<c:when test="${product.discounted}">
 														<del>
-															<c:out value="${product.originalPrice}" />
+															<sm:monetary value="${product.originalPrice}" />
 														</del>&nbsp;<span class="specialPrice"><span
-															itemprop="price"><c:out
-																	value="${product.finalPrice}" /></span></span>
+															itemprop="price"><sm:monetary
+															value="${product.finalPrice}" /></span></span>
 													</c:when>
 													<c:otherwise>
 														<span itemprop="price"><c:out

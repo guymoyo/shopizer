@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import com.salesmanager.core.business.component.TelegramNotifier;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.StringUtils;
@@ -149,6 +150,9 @@ public class ShoppingOrderController extends AbstractController {
 	
 	@Inject
 	private OrderProductDownloadService orderProdctDownloadService;
+
+	@Inject
+	private TelegramNotifier telegramNotifier;
 
 	
 	@SuppressWarnings("unused")
@@ -652,7 +656,9 @@ public class ShoppingOrderController extends AbstractController {
 	    		
 				//send order confirmation email to merchant
 				emailTemplatesUtils.sendOrderEmail(store.getStoreEmailAddress(), modelCustomer, modelOrder, locale, language, store, request.getContextPath());
-		        
+
+		        //send order confirmation to telegram admin group
+				telegramNotifier.sendmsgOnOrder("nouvelle commande, cmdId: "+modelOrder.getId()+" Montant: "+ modelOrder.getTotal().toString());
 	    		
 	    		
 	        } catch(Exception e) {
