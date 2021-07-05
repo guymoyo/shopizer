@@ -42,7 +42,10 @@ public class Product implements Serializable {
 	
 	@NotEmpty
 	private String productPrice = "0";
-	
+
+	@NotEmpty
+	private String productPricePurchase = "0";
+
 	private String dateAvailable;
 
 	private ProductDescription description = null;
@@ -85,6 +88,13 @@ public class Product implements Serializable {
 		this.image = image;
 	}
 
+	public String getProductPricePurchase() {
+		return productPricePurchase;
+	}
+	public void setProductPricePurchase(String productPricePurchase) {
+		this.productPricePurchase = productPricePurchase;
+	}
+
 	public void setProductPrice(String productPrice) {
 		this.productPrice = productPrice;
 	}
@@ -103,10 +113,6 @@ public class Product implements Serializable {
 	public ProductDescription getDescription() {
 		return description;
 	}
-	
-
-
-
 
 
 }

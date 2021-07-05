@@ -53,6 +53,9 @@ public class ProductPrice extends SalesManagerEntity<Long, ProductPrice> {
 	@Column(name = "PRODUCT_PRICE_AMOUNT", nullable=false)
 	private BigDecimal productPriceAmount = new BigDecimal(0);
 
+	@Column(name = "PRODUCT_PRICE_PURCHASE", nullable = false)
+	private BigDecimal productPricePurchase= new BigDecimal(0);
+
 	@Column(name = "PRODUCT_PRICE_TYPE", length=20)
 	@Enumerated(value = EnumType.STRING)
 	private ProductPriceType productPriceType = ProductPriceType.ONE_TIME;
@@ -74,7 +77,7 @@ public class ProductPrice extends SalesManagerEntity<Long, ProductPrice> {
 	@JsonIgnore
 	@ManyToOne(targetEntity = ProductAvailability.class)
 	@JoinColumn(name = "PRODUCT_AVAIL_ID", nullable = false)
-	private ProductAvailability productAvailability;
+private ProductAvailability productAvailability;
 	
 
 	public ProductPrice() {
@@ -91,7 +94,13 @@ public class ProductPrice extends SalesManagerEntity<Long, ProductPrice> {
 	}
 
 
+	public BigDecimal getProductPricePurchase() {
+		return productPricePurchase;
+	}
 
+	public void setProductPricePurchase(BigDecimal productPricePurchase) {
+		this.productPricePurchase = productPricePurchase;
+	}
 
 	public BigDecimal getProductPriceAmount() {
 		return productPriceAmount;
