@@ -180,6 +180,17 @@ Setup
     text-decoration: none;	
 }
 
+.store-btn .buyNow {
+    float: left;
+    background-color: #555555;
+    color: white;
+    padding: 0 1.3em;
+    font-size: 1.0em;
+    text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
+    line-height: 42px;
+    text-decoration: none;
+}
+
 
 
 .store-btn{
@@ -1289,7 +1300,7 @@ fieldset[disabled] .twitter-typeahead .tt-input {
     font-weight: normal;
     line-height: 1.42857143;
     color: #878c94; 
-    font-size:15px
+    font-size:15px;
     white-space: nowrap;
 }
 .topBar .dropdown-menu > li > a:hover, .dropdown-menu > li > a:focus {

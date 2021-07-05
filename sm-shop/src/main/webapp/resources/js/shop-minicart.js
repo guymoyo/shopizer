@@ -40,6 +40,15 @@
     	$("#open-cart").click(function(e) {
     		//nothing required
     	});
+
+		/** buy now **/
+		$(".buyNow").click(function(){
+			addToCart($(this).attr("productId"));
+			$( document ).ajaxComplete(function() {
+				window.location.href = getContextPath() + '/shop/cart/shoppingCart.html';
+			});
+
+		});
 		
 	}
 	

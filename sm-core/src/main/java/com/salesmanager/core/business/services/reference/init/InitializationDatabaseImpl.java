@@ -380,20 +380,22 @@ public class InitializationDatabaseImpl implements InitializationDatabase {
 		Date date = new Date(System.currentTimeMillis());
 		
 		Language en = languageService.getByCode("en");
-		Country ca = countryService.getByCode("CA");
-		Currency currency = currencyService.getByCode("CAD");
+		Language fr = languageService.getByCode("fr");
+		Country cm = countryService.getByCode("CM");
+		Currency currency = currencyService.getByCode("XAF");
 		Zone qc = zoneService.getByCode("QC");
 		
 		List<Language> supportedLanguages = new ArrayList<Language>();
 		supportedLanguages.add(en);
+		supportedLanguages.add(fr);
 		
 		//create a merchant
 		MerchantStore store = new MerchantStore();
-		store.setCountry(ca);
+		store.setCountry(cm);
 		store.setCurrency(currency);
-		store.setDefaultLanguage(en);
+		store.setDefaultLanguage(fr);
 		store.setInBusinessSince(date);
-		store.setZone(qc);
+		//store.setZone(qc);
 		store.setStorename("Default store");
 		store.setStorephone("888-888-8888");
 		store.setCode(MerchantStore.DEFAULT_STORE);

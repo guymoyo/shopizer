@@ -38,7 +38,7 @@ import com.salesmanager.core.model.order.orderproduct.OrderProduct;
 @Component("priceUtil")
 public class ProductPriceUtils {
 	
-	private final static char DECIMALCOUNT = '2';
+	private final static char DECIMALCOUNT = '0';
 	private final static char DECIMALPOINT = '.';
 	private final static char THOUSANDPOINT = ',';
 	
@@ -184,7 +184,7 @@ public class ProductPriceUtils {
 	 * @throws Exception
 	 */
 	public String getAdminFormatedAmount(MerchantStore store, BigDecimal amount) throws Exception {
-		//TODO Kouemo
+
 		if(amount==null) {
 			return "";
 		}
@@ -242,7 +242,12 @@ public class ProductPriceUtils {
 		}
 	    currencyInstance.setCurrency(currency);
 		
-	    
+	    //TODO: convert to cfa
+		/*if(currency.getCurrencyCode().equalsIgnoreCase("XAF")) {
+			BigDecimal taux = BigDecimal.valueOf(3); //store.getTauxConversionXAF();
+			amount = amount.multiply(taux);
+		}*/
+
 	    return currencyInstance.format(amount.doubleValue());
 		
 
@@ -321,7 +326,7 @@ public class ProductPriceUtils {
 				.toString(DECIMALCOUNT)));
 		nf.setCurrency(curr);
 
-
+		//TODO: copnvert to cfa
 		return nf.format(amount);
 	}
 

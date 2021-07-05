@@ -86,7 +86,7 @@
 								</ul>
 							</div>
 							<!-- fin col-lg -->
-							<div class="col-lg-7 col-md-5 col-sm-5 col-xs-12">
+							<div class="col-lg-5 col-md-3 col-sm-3 col-xs-12">
 								<div class="product-simple-content">
 									<div class="sinple-c-title">
 										<h1>${product.description.name}</h1>
@@ -146,6 +146,14 @@
 									<jsp:include
 										page="/pages/shop/common/catalog/addToCartProduct.jsp" />
 								</div>
+							</div>
+							<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 pt-80">
+									<div class="">
+										<img src="/resources/img/payment/momo/momo.jpeg"  alt="Moyen de paiement" />&nbsp;
+									</div>
+									<div>
+										<a href="https://wa.me/<c:out value="${requestScope.MERCHANT_STORE.storephone}"/>?text=${requestScope.MERCHANT_STORE.domainName}/shop/product/${product.description.friendlyUrl}.html"  target="_blank" ><img src="/resources/img/payment/momo/whazap.png"  alt="Question? click and chat." /></a>
+									</div>
 							</div>
 						</div>
 					</div>

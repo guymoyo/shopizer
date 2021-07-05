@@ -83,7 +83,8 @@ $(function(){
 									</div>
 							      
 								</c:if>
-									<button class="btn addToCart addToCartButton btn-buy" type="button" productId="<c:out value="${product.id}" />"><s:message code="button.label.addToCart" text="Add to cart"/></button>
+									<button class="btn btn-block addToCart addToCartButton btn-buy" type="button" productId="<c:out value="${product.id}" />"><i class="fa fa-shopping-cart"></i> <s:message code="button.label.addToCart" text="Add to cart"/></button>
+									<button class="btn btn-block buyNow addToCartButton btn-buy" type="button" productId="<c:out value="${product.id}" />"><i class="fa fa-money"></i> <s:message code="button.label.buyNow" text="Buy Now"/></button>
 								</div>
 								</c:if>
 								</c:if>
