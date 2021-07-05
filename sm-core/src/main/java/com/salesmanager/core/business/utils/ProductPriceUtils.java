@@ -38,7 +38,7 @@ import com.salesmanager.core.model.order.orderproduct.OrderProduct;
 @Component("priceUtil")
 public class ProductPriceUtils {
 	
-	private final static char DECIMALCOUNT = '2';
+	private final static char DECIMALCOUNT = '0';
 	private final static char DECIMALPOINT = '.';
 	private final static char THOUSANDPOINT = ',';
 	
