@@ -184,7 +184,7 @@ public class ProductPriceUtils {
 	 * @throws Exception
 	 */
 	public String getAdminFormatedAmount(MerchantStore store, BigDecimal amount) throws Exception {
-		//TODO Kouemo
+
 		if(amount==null) {
 			return "";
 		}
@@ -242,7 +242,12 @@ public class ProductPriceUtils {
 		}
 	    currencyInstance.setCurrency(currency);
 		
-	    //TODO: copnvert to cfa
+	    //TODO: convert to cfa
+		/*if(currency.getCurrencyCode().equalsIgnoreCase("XAF")) {
+			BigDecimal taux = BigDecimal.valueOf(3); //store.getTauxConversionXAF();
+			amount = amount.multiply(taux);
+		}*/
+
 	    return currencyInstance.format(amount.doubleValue());
 		
 
