@@ -155,6 +155,12 @@ public class MerchantStore extends SalesManagerEntity<Integer, MerchantStore> im
 	@Column(name = "INVOICE_TEMPLATE", length = 25)
 	private String invoiceTemplate;
 
+	@Column(name= "PRICE_DOLLARS_FCFA", nullable = false)
+    private BigDecimal priceDollars= new BigDecimal(0);
+
+    @Column(name = "PERCENTAGE_PROFIT_RATE", nullable = false)
+    private BigDecimal percentageProfitRate= new BigDecimal(0);
+
 	@Column(name = "DOMAIN_NAME", length = 80)
 	private String domainName;
 
@@ -374,6 +380,22 @@ public class MerchantStore extends SalesManagerEntity<Integer, MerchantStore> im
 
 	public String getDateBusinessSince() {
 		return dateBusinessSince;
+	}
+
+	public BigDecimal getPriceDollars() {
+		return priceDollars;
+	}
+
+	public void setPriceDollars(BigDecimal priceDollars) {
+		this.priceDollars = priceDollars;
+	}
+
+	public BigDecimal getPercentageProfitRate() {
+		return percentageProfitRate;
+	}
+
+	public void setPercentageProfitRate(BigDecimal percentageProfitRate) {
+		this.percentageProfitRate = percentageProfitRate;
 	}
 
 	public void setCurrencyFormatNational(boolean currencyFormatNational) {
