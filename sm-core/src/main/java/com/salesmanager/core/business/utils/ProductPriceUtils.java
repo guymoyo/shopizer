@@ -244,7 +244,7 @@ public class ProductPriceUtils {
 
 
 		if(currency.getCurrencyCode().equalsIgnoreCase("XAF")) {
-			BigDecimal priceDollars = BigDecimal.valueOf(554);//store.getPriceDollars();
+			BigDecimal priceDollars = store.getPriceDollars();
 			if(priceDollars!=null){
 				amount = amount.multiply(priceDollars);
 				currencyInstance.setMaximumFractionDigits(currency.getDefaultFractionDigits());
