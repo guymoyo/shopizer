@@ -45,7 +45,7 @@ public class Constants {
 
   public final static String DEFAULT_STORE = "DEFAULT";
 
-  public final static Locale DEFAULT_LOCALE = Locale.FRENCH;
+  public final static Locale DEFAULT_LOCALE = Locale.US;
   public final static Currency DEFAULT_CURRENCY = Currency.getInstance("XAF");
   
   public final static String PAYMENT_MODULES = "PAYMENT";

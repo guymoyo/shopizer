@@ -155,10 +155,10 @@ public class MerchantStore extends SalesManagerEntity<Integer, MerchantStore> im
 	@Column(name = "INVOICE_TEMPLATE", length = 25)
 	private String invoiceTemplate;
 
-	@Column(name= "PRICE_DOLLARS_FCFA", nullable = false)
+	@Column(name= "PRICE_DOLLARS_FCFA")
     private BigDecimal priceDollars= new BigDecimal(0);
 
-    @Column(name = "PERCENTAGE_PROFIT_RATE", nullable = false)
+    @Column(name = "PROFIT_RATE")
     private BigDecimal percentageProfitRate= new BigDecimal(0);
 
 	@Column(name = "DOMAIN_NAME", length = 80)

@@ -38,7 +38,7 @@ import com.salesmanager.core.model.order.orderproduct.OrderProduct;
 @Component("priceUtil")
 public class ProductPriceUtils {
 	
-	private final static char DECIMALCOUNT = '0';
+	private final static char DECIMALCOUNT = '2';
 	private final static char DECIMALPOINT = '.';
 	private final static char THOUSANDPOINT = ',';
 	
@@ -241,12 +241,15 @@ public class ProductPriceUtils {
 			currencyInstance = NumberFormat.getCurrencyInstance();//international
 		}
 	    currencyInstance.setCurrency(currency);
-		
-	    //TODO: convert to cfa
-		/*if(currency.getCurrencyCode().equalsIgnoreCase("XAF")) {
-			BigDecimal taux = BigDecimal.valueOf(3); //store.getTauxConversionXAF();
-			amount = amount.multiply(taux);
-		}*/
+
+
+		if(currency.getCurrencyCode().equalsIgnoreCase("XAF")) {
+			BigDecimal priceDollars = BigDecimal.valueOf(554);//store.getPriceDollars();
+			if(priceDollars!=null){
+				amount = amount.multiply(priceDollars);
+				currencyInstance.setMaximumFractionDigits(currency.getDefaultFractionDigits());
+			}
+		}
 
 	    return currencyInstance.format(amount.doubleValue());
 		
