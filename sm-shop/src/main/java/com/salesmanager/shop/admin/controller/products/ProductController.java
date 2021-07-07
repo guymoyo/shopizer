@@ -1065,6 +1065,9 @@ public class ProductController {
 		Menu currentMenu = (Menu)menus.get("catalogue");
 		model.addAttribute("currentMenu",currentMenu);
 		model.addAttribute("activeMenus",activeMenus);
-		//	
+		//
+
+		MerchantStore store = (MerchantStore)request.getAttribute(Constants.ADMIN_STORE);
+		model.addAttribute("benefice",store.getPercentageProfitRate());
 	}
 }

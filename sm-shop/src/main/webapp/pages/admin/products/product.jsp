@@ -33,6 +33,15 @@ var priceFormatMessage = '<s:message code="message.price.cents" text="Wrong form
 		$('#width').numeric({allow:"."});
 		$('#length').numeric({allow:"."});
 		$('#hight').numeric({allow:"."});
+
+        $('#productPricePurchase').change( function () {
+            var productPricePurchase = parseFloat($('#productPricePurchase').val());
+            var beneficePrct = '<c:out value="${benefice}"/>';
+            var benefice = productPricePurchase * beneficePrct/100;
+            var productPriceAmount = productPricePurchase + benefice;
+            $('#productPriceAmount').val(productPriceAmount);
+        })
+
 		<c:forEach items="${product.descriptions}" var="description" varStatus="counter">		
 			$("#name${counter.index}").friendurl({id : 'seUrl${counter.index}'});
 		</c:forEach>
@@ -104,7 +113,7 @@ var priceFormatMessage = '<s:message code="message.price.cents" text="Wrong form
 						</c:otherwise>
 					</c:choose>
 					
-				</h3>	
+				</h3>
 				<br/>
 				<c:if test="${product.product.id!=null && product.product.id>0}">
 					<c:forEach items="${product.descriptions}" var="description" varStatus="counter">
@@ -127,7 +136,6 @@ var priceFormatMessage = '<s:message code="message.price.cents" text="Wrong form
 	                                  <span class="help-inline"><s:message code="label.generic.alphanumeric" text="Alphanumeric" /><form:errors path="product.sku" cssClass="error" /></span>
 	                        </div>
                   		</div>
-                  		
                   		<div class="control-group">
 	                        <label><s:message code="label.product.refsku" text="External system identifier"/></label>
 	                        <div class="controls">
