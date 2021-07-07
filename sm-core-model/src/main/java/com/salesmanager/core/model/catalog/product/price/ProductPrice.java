@@ -53,7 +53,7 @@ public class ProductPrice extends SalesManagerEntity<Long, ProductPrice> {
 	@Column(name = "PRODUCT_PRICE_AMOUNT", nullable=false)
 	private BigDecimal productPriceAmount = new BigDecimal(0);
 
-	@Column(name = "PRODUCT_PRICE_PURCHASE", nullable = false)
+	@Column(name = "PRODUCT_PRICE_PURCHASE")
 	private BigDecimal productPricePurchase= new BigDecimal(0);
 
 	@Column(name = "PRODUCT_PRICE_TYPE", length=20)
