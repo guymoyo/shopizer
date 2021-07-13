@@ -9,6 +9,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -166,15 +167,12 @@ public class ShippingConfigsController {
 	public @ResponseBody ResponseEntity<String> updateCountry(HttpServletRequest request, HttpServletResponse response) {
 		String values = request.getParameter("_oldValues");
 		String supported = request.getParameter("supported");
-		
-		
-		
 
-		
-		
 		AjaxResponse resp = new AjaxResponse();
 
 		try {
+
+			values = StringEscapeUtils.unescapeHtml4(values);
 			
 			ObjectMapper mapper = new ObjectMapper();
 			@SuppressWarnings("rawtypes")
