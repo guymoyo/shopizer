@@ -1,8 +1,10 @@
 package com.salesmanager.core.business.services.reference.init;
 
+import java.math.BigDecimal;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -12,6 +14,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.salesmanager.core.business.exception.ServiceException;
+import com.salesmanager.core.business.services.catalog.category.CategoryService;
 import com.salesmanager.core.business.services.catalog.product.manufacturer.ManufacturerService;
 import com.salesmanager.core.business.services.catalog.product.type.ProductTypeService;
 import com.salesmanager.core.business.services.merchant.MerchantStoreService;
@@ -28,6 +31,8 @@ import com.salesmanager.core.business.services.user.GroupService;
 import com.salesmanager.core.business.services.user.PermissionService;
 import com.salesmanager.core.business.utils.SecurityGroupsBuilder;
 import com.salesmanager.core.constants.SchemaConstant;
+import com.salesmanager.core.model.catalog.category.Category;
+import com.salesmanager.core.model.catalog.category.CategoryDescription;
 import com.salesmanager.core.model.catalog.product.manufacturer.Manufacturer;
 import com.salesmanager.core.model.catalog.product.manufacturer.ManufacturerDescription;
 import com.salesmanager.core.model.catalog.product.type.ProductType;
@@ -83,6 +88,9 @@ public class InitializationDatabaseImpl implements InitializationDatabase {
 	private ManufacturerService manufacturerService;
 	
 	@Inject
+	private	CategoryService categoryService;
+	
+	@Inject
 	private ModuleConfigurationService moduleConfigurationService;
 	
 	@Inject
@@ -99,6 +107,8 @@ public class InitializationDatabaseImpl implements InitializationDatabase {
 	public boolean isEmpty() {
 		return languageService.count() == 0;
 	}
+	
+
 	
 	@Transactional
 	public void populate(String contextName) throws ServiceException {
@@ -400,10 +410,13 @@ public class InitializationDatabaseImpl implements InitializationDatabase {
 		store.setStorephone("888-888-8888");
 		store.setCode(MerchantStore.DEFAULT_STORE);
 		store.setStorecity("My city");
+		store.setPriceDollars(new BigDecimal(510));
+		store.setPercentageProfitRate(new BigDecimal(10));
+		store.setStorestateprovince("My State Province");
 		store.setStoreaddress("1234 Street address");
 		store.setStorepostalcode("H2H-2H2");
 		store.setStoreEmailAddress("john@test.com");
-		store.setDomainName("localhost:8080");
+		store.setDomainName("http://localhost:8080");
 		store.setStoreTemplate("december");
 		store.setRetailer(true);
 		store.setLanguages(supportedLanguages);
@@ -421,23 +434,314 @@ public class InitializationDatabaseImpl implements InitializationDatabase {
 		defaultManufacturer.setCode("DEFAULT");
 		defaultManufacturer.setMerchantStore(store);
 		
-		ManufacturerDescription manufacturerDescription = new ManufacturerDescription();
-		manufacturerDescription.setLanguage(en);
-		manufacturerDescription.setName("DEFAULT");
-		manufacturerDescription.setManufacturer(defaultManufacturer);
-		manufacturerDescription.setDescription("DEFAULT");
-		defaultManufacturer.getDescriptions().add(manufacturerDescription);
+		ManufacturerDescription manufacturerDescriptionEn = new ManufacturerDescription();
+		manufacturerDescriptionEn.setLanguage(en);
+		manufacturerDescriptionEn.setName("DEFAULT");
+		manufacturerDescriptionEn.setManufacturer(defaultManufacturer);
+		manufacturerDescriptionEn.setDescription("DEFAULT");
 		
-		manufacturerService.create(defaultManufacturer);
+		ManufacturerDescription manufacturerDescriptionFr = new ManufacturerDescription();
+		manufacturerDescriptionFr.setLanguage(fr);
+		manufacturerDescriptionFr.setName("DEFAUT");
+		manufacturerDescriptionFr.setManufacturer(defaultManufacturer);
+		manufacturerDescriptionFr.setDescription("DEFAUT");
+		
+		
+		defaultManufacturer.getDescriptions().add(manufacturerDescriptionEn);
+		defaultManufacturer.getDescriptions().add(manufacturerDescriptionFr);
+		
+		manufacturerService.create(defaultManufacturer);		
 		
 	   Optin newsletter = new Optin();
 	   newsletter.setCode(OptinType.NEWSLETTER.name());
 	   newsletter.setMerchant(store);
 	   newsletter.setOptinType(OptinType.NEWSLETTER);
-	   optinService.create(newsletter);
+	   optinService.create(newsletter);	   
+		
+		createCategory(store, en, fr);		
 		
 		
 	}
+	/**
+	 * 
+	 * @param store
+	 * @param en
+	 * @param fr
+	 * @throws ServiceException
+	 */
+	private void createCategory(MerchantStore store, Language en, Language fr) throws ServiceException {
+		LOGGER.info(String.format("%s : Creating category ", name));		
+		
+		//create default Category FEMALE
+		Category categoryF = new Category();
+		CategoryDescription categoryDescriptionEn = new CategoryDescription();		
+		CategoryDescription categoryDescriptionFr = new CategoryDescription();	
+		categoryF.getDescriptions().add(categoryDescriptionEn);
+		categoryF.getDescriptions().add(categoryDescriptionFr);
+		categoryF.setMerchantStore(store);
+		categoryF.setParent(null);
+		categoryF.setCode("KF01");
+		categoryF.setVisible(true);
+		categoryF.setFeatured(false);
+		categoryF.setSortOrder(0);			
+		categoryDescriptionEn.setCategory(categoryF);
+		categoryDescriptionEn.setLanguage(en);
+		categoryDescriptionEn.setName("FAMALE");
+		categoryDescriptionEn.setSeUrl("female");
+		categoryDescriptionFr.setCategory(categoryF);
+		categoryDescriptionFr.setLanguage(fr);
+		categoryDescriptionFr.setName("FEMME");
+		categoryDescriptionFr.setSeUrl("femme");				
+		categoryService.create(categoryF);
+		
+		//create default Category MALE
+		Category categoryH = new Category();
+		categoryDescriptionEn = new CategoryDescription();		
+		categoryDescriptionFr = new CategoryDescription();	
+		categoryH.getDescriptions().add(categoryDescriptionEn);
+		categoryH.getDescriptions().add(categoryDescriptionFr);
+		categoryH.setMerchantStore(store);
+		categoryH.setParent(null);
+		categoryH.setCode("KH01");
+		categoryH.setVisible(true);
+		categoryH.setFeatured(false);
+		categoryH.setSortOrder(0);			
+		categoryDescriptionEn.setCategory(categoryH);
+		categoryDescriptionEn.setLanguage(en);
+		categoryDescriptionEn.setName("MALE");
+		categoryDescriptionEn.setSeUrl("male");
+		categoryDescriptionFr.setCategory(categoryH);
+		categoryDescriptionFr.setLanguage(fr);
+		categoryDescriptionFr.setName("HOMME");
+		categoryDescriptionFr.setSeUrl("homme");				
+		categoryService.create(categoryH);
+		
+		//create default Category CHILD
+		Category categoryE = new Category();
+		categoryDescriptionEn = new CategoryDescription();		
+		categoryDescriptionFr = new CategoryDescription();	
+		categoryE.getDescriptions().add(categoryDescriptionEn);
+		categoryE.getDescriptions().add(categoryDescriptionFr);
+		categoryE.setMerchantStore(store);
+		categoryE.setParent(null);
+		categoryE.setCode("KE01");
+		categoryE.setVisible(true);
+		categoryE.setFeatured(false);
+		categoryE.setSortOrder(0);			
+		categoryDescriptionEn.setCategory(categoryE);
+		categoryDescriptionEn.setLanguage(en);
+		categoryDescriptionEn.setName("CHILD");
+		categoryDescriptionEn.setSeUrl("child");
+		categoryDescriptionFr.setCategory(categoryE);
+		categoryDescriptionFr.setLanguage(fr);
+		categoryDescriptionFr.setName("ENFANT");
+		categoryDescriptionFr.setSeUrl("enfant");				
+		categoryService.create(categoryE);
+		
+		//create sub Category FEMALE clothing		
+		Category subCategoryV = new Category();
+		categoryDescriptionEn = new CategoryDescription();		
+		categoryDescriptionFr = new CategoryDescription();	
+		subCategoryV.getDescriptions().add(categoryDescriptionEn);
+		subCategoryV.getDescriptions().add(categoryDescriptionFr);
+		subCategoryV.setMerchantStore(store);
+		subCategoryV.setParent(categoryF);
+		subCategoryV.setCode("237VTF");
+		subCategoryV.setVisible(true);
+		subCategoryV.setFeatured(true);
+		subCategoryV.setSortOrder(0);		
+		categoryDescriptionEn.setCategory(subCategoryV);
+		categoryDescriptionEn.setLanguage(en);
+		categoryDescriptionEn.setName("clothing");
+		categoryDescriptionEn.setSeUrl("clothing");
+		categoryDescriptionFr.setCategory(subCategoryV);
+		categoryDescriptionFr.setLanguage(fr);
+		categoryDescriptionFr.setName("VETEMENTS");
+		categoryDescriptionFr.setSeUrl("vêtements");
+		categoryService.create(subCategoryV);
+		
+		//create sub Category FEMALE Bags		
+		Category subCategoryL = new Category();
+		categoryDescriptionEn = new CategoryDescription();		
+		categoryDescriptionFr = new CategoryDescription();	
+		subCategoryL.getDescriptions().add(categoryDescriptionEn);
+		subCategoryL.getDescriptions().add(categoryDescriptionFr);
+		subCategoryL.setMerchantStore(store);
+		subCategoryL.setParent(categoryF);
+		subCategoryL.setCode("237BGF");
+		subCategoryL.setVisible(true);
+		subCategoryL.setFeatured(true);
+		subCategoryL.setSortOrder(0);		
+		categoryDescriptionEn.setCategory(subCategoryL);
+		categoryDescriptionEn.setLanguage(en);
+		categoryDescriptionEn.setName("BAGS");
+		categoryDescriptionEn.setSeUrl("bags");
+		categoryDescriptionFr.setCategory(subCategoryL);
+		categoryDescriptionFr.setLanguage(fr);
+		categoryDescriptionFr.setName("SACS");
+		categoryDescriptionFr.setSeUrl("sacs");
+		categoryService.create(subCategoryL);
+		
+		//create sub Category FEMALE shoes		
+		Category subCategoryC = new Category();
+		categoryDescriptionEn = new CategoryDescription();		
+		categoryDescriptionFr = new CategoryDescription();	
+		subCategoryC.getDescriptions().add(categoryDescriptionEn);
+		subCategoryC.getDescriptions().add(categoryDescriptionFr);
+		subCategoryC.setMerchantStore(store);
+		subCategoryC.setParent(categoryF);
+		subCategoryC.setCode("237CHF");
+		subCategoryC.setVisible(true);
+		subCategoryC.setFeatured(true);
+		subCategoryC.setSortOrder(0);		
+		categoryDescriptionEn.setCategory(subCategoryC);
+		categoryDescriptionEn.setLanguage(en);
+		categoryDescriptionEn.setName("SHOES");
+		categoryDescriptionEn.setSeUrl("shoes");
+		categoryDescriptionFr.setCategory(subCategoryC);
+		categoryDescriptionFr.setLanguage(fr);
+		categoryDescriptionFr.setName("CHAUSSURES");
+		categoryDescriptionFr.setSeUrl("chaussures");
+		categoryService.create(subCategoryC);
+		
+		
+			
+		//create sub Category MALE clothing		
+		Category subCategoryV1 = new Category();
+		categoryDescriptionEn = new CategoryDescription();		
+		categoryDescriptionFr = new CategoryDescription();	
+		subCategoryV1.getDescriptions().add(categoryDescriptionEn);
+		subCategoryV1.getDescriptions().add(categoryDescriptionFr);
+		subCategoryV1.setMerchantStore(store);
+		subCategoryV1.setParent(categoryH);
+		subCategoryV1.setCode("237VTM");
+		subCategoryV1.setVisible(true);
+		subCategoryV1.setFeatured(true);
+		subCategoryV1.setSortOrder(0);		
+		categoryDescriptionEn.setCategory(subCategoryV1);
+		categoryDescriptionEn.setLanguage(en);
+		categoryDescriptionEn.setName("clothing");
+		categoryDescriptionEn.setSeUrl("clothing");
+		categoryDescriptionFr.setCategory(subCategoryV1);
+		categoryDescriptionFr.setLanguage(fr);
+		categoryDescriptionFr.setName("VETEMENTS");
+		categoryDescriptionFr.setSeUrl("vêtements");
+		categoryService.create(subCategoryV1);
+		
+		//create sub Category Male bags		
+		Category subCategoryB = new Category();
+		categoryDescriptionEn = new CategoryDescription();		
+		categoryDescriptionFr = new CategoryDescription();	
+		subCategoryB.getDescriptions().add(categoryDescriptionEn);
+		subCategoryB.getDescriptions().add(categoryDescriptionFr);
+		subCategoryB.setMerchantStore(store);
+		subCategoryB.setParent(categoryH);
+		subCategoryB.setCode("237BGH");
+		subCategoryB.setVisible(true);
+		subCategoryB.setFeatured(true);
+		subCategoryB.setSortOrder(0);		
+		categoryDescriptionEn.setCategory(subCategoryB);
+		categoryDescriptionEn.setLanguage(en);
+		categoryDescriptionEn.setName("BAGS");
+		categoryDescriptionEn.setSeUrl("bags");
+		categoryDescriptionFr.setCategory(subCategoryB);
+		categoryDescriptionFr.setLanguage(fr);
+		categoryDescriptionFr.setName("SACS");
+		categoryDescriptionFr.setSeUrl("sacs");
+		categoryService.create(subCategoryB);
+		
+		//create sub Category MALE shoes		
+		Category subCategoryC1 = new Category();
+		categoryDescriptionEn = new CategoryDescription();		
+		categoryDescriptionFr = new CategoryDescription();	
+		subCategoryC1.getDescriptions().add(categoryDescriptionEn);
+		subCategoryC1.getDescriptions().add(categoryDescriptionFr);
+		subCategoryC1.setMerchantStore(store);
+		subCategoryC1.setParent(categoryH);
+		subCategoryC1.setCode("237CHH");
+		subCategoryC1.setVisible(true);
+		subCategoryC1.setFeatured(true);
+		subCategoryC1.setSortOrder(0);		
+		categoryDescriptionEn.setCategory(subCategoryC1);
+		categoryDescriptionEn.setLanguage(en);
+		categoryDescriptionEn.setName("SHOES");
+		categoryDescriptionEn.setSeUrl("shoes");
+		categoryDescriptionFr.setCategory(subCategoryC1);
+		categoryDescriptionFr.setLanguage(fr);
+		categoryDescriptionFr.setName("CHAUSSURES");
+		categoryDescriptionFr.setSeUrl("chaussures");
+		categoryService.create(subCategoryC1);
+		
+		//create sub Category baby	
+		Category subCategoryCH = new Category();
+		categoryDescriptionEn = new CategoryDescription();		
+		categoryDescriptionFr = new CategoryDescription();	
+		subCategoryCH.getDescriptions().add(categoryDescriptionEn);
+		subCategoryCH.getDescriptions().add(categoryDescriptionFr);
+		subCategoryCH.setMerchantStore(store);
+		subCategoryCH.setParent(categoryE);
+		subCategoryCH.setCode("237VTBA");
+		subCategoryCH.setVisible(true);
+		subCategoryCH.setFeatured(true);
+		subCategoryCH.setSortOrder(0);		
+		categoryDescriptionEn.setCategory(subCategoryCH);
+		categoryDescriptionEn.setLanguage(en);
+		categoryDescriptionEn.setName("BABY");
+		categoryDescriptionEn.setSeUrl("baby");
+		categoryDescriptionFr.setCategory(subCategoryCH);
+		categoryDescriptionFr.setLanguage(fr);
+		categoryDescriptionFr.setName("BEBE");
+		categoryDescriptionFr.setSeUrl("bebe");
+		categoryService.create(subCategoryCH);
+		
+		//create sub Category Girl		
+		Category subCategoryGl = new Category();
+		categoryDescriptionEn = new CategoryDescription();		
+		categoryDescriptionFr = new CategoryDescription();	
+		subCategoryGl.getDescriptions().add(categoryDescriptionEn);
+		subCategoryGl.getDescriptions().add(categoryDescriptionFr);
+		subCategoryGl.setMerchantStore(store);
+		subCategoryGl.setParent(categoryE);
+		subCategoryGl.setCode("237BGBA");
+		subCategoryGl.setVisible(true);
+		subCategoryGl.setFeatured(true);
+		subCategoryGl.setSortOrder(0);		
+		categoryDescriptionEn.setCategory(subCategoryGl);
+		categoryDescriptionEn.setLanguage(en);
+		categoryDescriptionEn.setName("GIRLS");
+		categoryDescriptionEn.setSeUrl("girls");
+		categoryDescriptionFr.setCategory(subCategoryGl);
+		categoryDescriptionFr.setLanguage(fr);
+		categoryDescriptionFr.setName("FILLES");
+		categoryDescriptionFr.setSeUrl("filles");
+		categoryService.create(subCategoryGl);
+		
+		//create sub Category BOYS		
+		Category subCategoryBy = new Category();
+		categoryDescriptionEn = new CategoryDescription();		
+		categoryDescriptionFr = new CategoryDescription();	
+		subCategoryBy.getDescriptions().add(categoryDescriptionEn);
+		subCategoryBy.getDescriptions().add(categoryDescriptionFr);
+		subCategoryBy.setMerchantStore(store);
+		subCategoryBy.setParent(categoryE);
+		subCategoryBy.setCode("237CHBA");
+		subCategoryBy.setVisible(true);
+		subCategoryBy.setFeatured(true);
+		subCategoryBy.setSortOrder(0);		
+		categoryDescriptionEn.setCategory(subCategoryBy);
+		categoryDescriptionEn.setLanguage(en);
+		categoryDescriptionEn.setName("BOYS");
+		categoryDescriptionEn.setSeUrl("boys");
+		categoryDescriptionFr.setCategory(subCategoryBy);
+		categoryDescriptionFr.setLanguage(fr);
+		categoryDescriptionFr.setName("GARCONS");
+		categoryDescriptionFr.setSeUrl("garcons");
+		categoryService.create(subCategoryBy);						
+						
+						
+	}
+	
+	
 
 	private void createModules() throws ServiceException {
 		

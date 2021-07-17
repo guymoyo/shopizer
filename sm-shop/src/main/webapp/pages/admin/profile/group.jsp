@@ -37,7 +37,8 @@
 				<c:url var="groupSave" value="/admin/group/save.html" />
 
 
-				<form:form method="POST" modelAttribute="group" action="${groupSave}">
+				<form:form method="POST" modelAttribute="group"
+					action="${groupSave}">
 
 
 					<form:errors path="*" cssClass="alert alert-error" element="div" />
@@ -54,8 +55,8 @@
 								text="Group name" /></label>
 						<div class="controls">
 							<form:input cssClass="input-large" path="group.groupName" />
-							<span class="help-inline"><form:errors path="group.groupName"
-									cssClass="error" /></span>
+							<span class="help-inline"><form:errors
+									path="group.groupName" cssClass="error" /></span>
 						</div>
 					</div>
 
@@ -65,8 +66,8 @@
 							<form:select path="group.groupType">
 								<form:options items="${group.types}" />
 							</form:select>
-							<span class="help-inline"><form:errors path="group.groupType"
-									cssClass="error" /></span>
+							<span class="help-inline"><form:errors
+									path="group.groupType" cssClass="error" /></span>
 						</div>
 					</div>
 
@@ -83,8 +84,8 @@
 
 						</div>
 					</c:if>
-					
-     
+
+
 				</form:form>
 
 			</div>
