@@ -269,6 +269,7 @@ public class ProductPriceController {
 								pprice.setProductPriceSpecialEndDate(DateUtil.formatDate(price.getProductPriceSpecialEndDate()));
 							}
 							pprice.setPriceText(priceUtil.getAdminFormatedAmount(store, price.getProductPriceAmount()));
+							pprice.setPricePurchaseText(priceUtil.getAdminFormatedAmount(store, price.getProductPricePurchase()));
 							if(price.getProductPriceSpecialAmount()!=null) {
 								pprice.setSpecialPriceText(priceUtil.getAdminFormatedAmount(store, price.getProductPriceSpecialAmount()));
 							}
@@ -361,6 +362,15 @@ public class ProductPriceController {
 			result.addError(error);
 		}
 		
+		//validate price purchase
+		BigDecimal submitedPricePurchase = null;
+		try {
+			submitedPricePurchase = priceUtil.getAmount(price.getPricePurchaseText());
+		} catch (Exception e) {
+			ObjectError error = new ObjectError("productPrice",messages.getMessage("NotEmpty.product.productPricePurchase", locale));
+			result.addError(error);
+		}
+		
 		//validate discount price
 		BigDecimal submitedDiscountPrice = null;
 		
@@ -401,6 +411,7 @@ public class ProductPriceController {
 		
 
 		price.getPrice().setProductPriceAmount(submitedPrice);
+		price.getPrice().setProductPricePurchase(submitedPricePurchase);		
 		if(!StringUtils.isBlank(price.getSpecialPriceText())) {
 			price.getPrice().setProductPriceSpecialAmount(submitedDiscountPrice);
 		}
@@ -416,9 +427,7 @@ public class ProductPriceController {
 			}
 			
 			
-		}
-		
-		
+		}	
 		
 		
 		Set<ProductPriceDescription> descriptions = new HashSet<ProductPriceDescription>();
@@ -498,6 +507,9 @@ public class ProductPriceController {
 		Menu currentMenu = (Menu)menus.get("catalogue");
 		model.addAttribute("currentMenu",currentMenu);
 		model.addAttribute("activeMenus",activeMenus);
+		
+		MerchantStore store = (MerchantStore)request.getAttribute(Constants.ADMIN_STORE);
+		model.addAttribute("benefice",store.getPercentageProfitRate());
 		//
 		
 	}

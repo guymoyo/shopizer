@@ -14,6 +14,7 @@ public class ProductPrice {
 	@Valid
 	private List <ProductPriceDescription> descriptions = new ArrayList<ProductPriceDescription>();
 	private String priceText;
+	private String pricePurchaseText;	
 	private String specialPriceText;
 	private ProductAvailability productAvailability;
 	
@@ -57,6 +58,13 @@ public class ProductPrice {
 	}
 	public void setSpecialPriceText(String specialPriceText) {
 		this.specialPriceText = specialPriceText;
+	}
+	
+	public String getPricePurchaseText() {
+		return pricePurchaseText;
+	}
+	public void setPricePurchaseText(String pricePurchaseText) {
+		this.pricePurchaseText = pricePurchaseText;
 	}
 
 	public com.salesmanager.core.model.catalog.product.Product getProduct() {

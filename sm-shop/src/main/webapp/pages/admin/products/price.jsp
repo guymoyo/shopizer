@@ -16,7 +16,13 @@ var priceFormatMessage = '<s:message code="message.price.cents" text="Wrong form
 
 <script type="text/javascript">
 	$(function(){
+		
+		$('#productSpecialPriceAmount').numeric({allow:"."});
+		$('#productPriceAmount').numeric({allow:"."});
+		$('#pricePurchase').numeric({allow:"."});
+		
 			
+		
 			$('#productSpecialPriceAmount').blur(function() {
 				$('#help-price').html(null);
 				$(this).formatCurrency({ roundToDecimalPlace: 2, eventOnDecimalsEntered: true, symbol: ''});
@@ -50,7 +56,14 @@ var priceFormatMessage = '<s:message code="message.price.cents" text="Wrong form
 				}
 			});
 			
-			$('#productSpecialPriceAmount').numeric({allow:"."});
+			
+			 $('#pricePurchase').change( function () {
+		            var productPricePurchase = parseFloat($('#pricePurchase').val());
+		            var beneficePrct = '<c:out value="${benefice}"/>';
+		            var benefice = productPricePurchase * beneficePrct/100;
+		            var productPriceAmount = productPricePurchase + benefice;
+		            $('#productPriceAmount').val(productPriceAmount);
+		        })
 
 
 	});
@@ -92,11 +105,22 @@ var priceFormatMessage = '<s:message code="message.price.cents" text="Wrong form
       							
       				<form:errors path="*" cssClass="alert alert-error" element="div" />
 					<div id="store.success" class="alert alert-success" style="<c:choose><c:when test="${success!=null}">display:block;</c:when><c:otherwise>display:none;</c:otherwise></c:choose>"><s:message code="message.success" text="Request successfull"/></div>    
-
+					
+				<div class="control-group">
+                  <label class="required"><s:message code="label.product.price.purchase" text="Price purchase"/></label>
+                  <div class="controls">
+                      <form:input id="pricePurchase" cssClass="input-large highlight" path="pricePurchaseText"/>
+                      <span id="help-price" class="help-inline"><form:errors path="pricePurchaseText" cssClass="error" /></span>
+                  </div>
+                </div>
+	                 
+	                 
+					
+					
 					<div class="control-group">
 	                        <label class="required"><s:message code="label.product.price" text="Price"/></label>
 	                        <div class="controls">
-	                                    <form:input id="productPriceAmount" cssClass="highlight" path="priceText"/>
+	                                    <form:input id="productPriceAmount" cssClass="highlight" path="priceText" />
 	                                    <span id="help-price" class="help-inline"><form:errors path="priceText" cssClass="error" /></span>
 	                        </div>
 	                 </div>
@@ -174,8 +198,8 @@ var priceFormatMessage = '<s:message code="message.price.cents" text="Wrong form
                   <form:hidden path="price.id" />
                   <form:hidden path="productAvailability.region" />
                   <form:hidden path="productAvailability.id" />
-                  <form:hidden path="product.id" />
-			
+                  <form:hidden path="product.id" /> 
+                  			
 			      <div class="form-actions">
 
                   		<div class="pull-right">
