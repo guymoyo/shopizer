@@ -1,0 +1,64 @@
+version: "3"
+networks:
+  shopizer-network:
+
+services:
+  shopizer-db:
+    environment:
+      - MYSQL_ROOT_PASSWORD=shopizer123
+      - MYSQL_DATABASE=SALESMANAGER
+      - MYSQL_USER=shopizer_db_user
+      - MYSQL_PASSWORD=shopizer_db_password
+    image: 'mysql/mysql-server:8.0'
+    command: '--max_allowed_packet=32505856'
+    container_name: shopizer-db
+    networks:
+      - shopizer-network
+    ports:
+      - '3307:3306'
+    volumes:
+      - './db:/var/lib/mysql'
+  shopizer:
+    depends_on:
+      - shopizer-db
+    environment:
+      - SPRING_PROFILES_ACTIVE=dev
+      - JAVA_OPTS=-Xms2048m -Xmx2048m
+      - 'elasticsearch.server.host=http://shopizer-es'
+      - elasticsearch.server.port=9200
+      - 'db.jdbcUrl=jdbc:mysql://shopizer-db:3306/SALESMANAGER?autoReconnect=true&useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC'
+      - db.user=shopizer_db_user
+      - db.password=shopizer_db_password
+      - elasticsearch.security.password=NOTREQUIRED
+      - config.displayShipping=true
+    image: 'guymoyo/shopizer:latest'
+    container_name: shopizer
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    mem_limit: 2048m
+    networks:
+      - shopizer-network
+    ports:
+      - '8080:8080'
+  shopizer-es:
+    environment:
+      - cluster.name=shopizer
+      - bootstrap.memory_lock=true
+      - discovery.type=single-node
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    image: 'docker.elastic.co/elasticsearch/elasticsearch:7.5.2'
+    container_name: shopizer-es
+    restart: on-failure
+    networks:
+      - shopizer-network
+    mem_limit: 1g
+    ports:
+      - '9200:9200'
+    ulimits:
+      memlock:
+        hard: -1
+        soft: -1
+    volumes:
+      - /usr/share/elasticsearch/data
+
