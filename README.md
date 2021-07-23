@@ -123,5 +123,7 @@ so we can send an invite to our Slack channel
 ### Production
 ./mvnw clean install
 ./mvn package
-java -jar -Dspring.profiles.active=mysql ROOT.jar
+
+nohup mvn spring-boot:run -Dspring-boot.run.profiles=prod-vt > trace.log &
+
 
