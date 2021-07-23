@@ -126,4 +126,5 @@ so we can send an invite to our Slack channel
 
 nohup mvn spring-boot:run -Dspring-boot.run.profiles=prod-vt > trace.log &
 
+tail -f trace.log
 
