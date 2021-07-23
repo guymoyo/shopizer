@@ -27,7 +27,6 @@ public class ShopErrorController {
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
 	@Produces({MediaType.APPLICATION_JSON})
 	public ModelAndView handleException(Exception ex) {
-		
 		LOGGER.error("Error page controller",ex);
 
 		ModelAndView model = null;
@@ -40,11 +39,21 @@ public class ShopErrorController {
 			model = new ModelAndView("error/generic_error");
 			model.addObject("stackError", ExceptionUtils.getStackTrace(ex));
 			model.addObject("errMsg", ex.getMessage());
+
 			
 		}
 
 		return model;
  
+	}
+
+	@ExceptionHandler(AccessDeniedException.class)
+	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
+	@Produces({MediaType.APPLICATION_JSON})
+	public ModelAndView handleAccessDeniedException(Exception ex) {
+		LOGGER.error("Error page controller",ex);
+
+		 return new ModelAndView("error/access_denied");
 	}
 	
 

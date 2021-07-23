@@ -89,7 +89,7 @@ public class ProductController {
 	@Inject
 	CategoryService categoryService;
 
-	@PreAuthorize("hasRole('PRODUCTS')")
+    @PreAuthorize("hasRole('PRODUCTS')")
 	@RequestMapping(value="/admin/products/editProduct.html", method=RequestMethod.GET)
 	public String displayProductEdit(@RequestParam("id") long productId, Model model, HttpServletRequest request, HttpServletResponse response) throws Exception {
 		return displayProduct(productId,model,request,response);
@@ -200,6 +200,7 @@ public class ProductController {
 							if(price.isDefaultPrice()) {
 								productPrice = price;
 								product.setProductPrice(priceUtil.getAdminFormatedAmount(store, productPrice.getProductPriceAmount()));
+								product.setProductPricePurchase(priceUtil.getAdminFormatedAmount(store, productPrice.getProductPricePurchase()));
 							}
 						}
 					}
@@ -299,12 +300,21 @@ public class ProductController {
 		
 		//validate price
 		BigDecimal submitedPrice = null;
+		BigDecimal submitedPricePurchase = null;
 		try {
 			submitedPrice = priceUtil.getAmount(product.getProductPrice());
 		} catch (Exception e) {
 			ObjectError error = new ObjectError("productPrice",messages.getMessage("NotEmpty.product.productPrice", locale));
 			result.addError(error);
 		}
+
+		try {
+			submitedPricePurchase = priceUtil.getAmount(product.getProductPricePurchase());
+		} catch (Exception e) {
+			ObjectError error = new ObjectError("productPricePurchase",messages.getMessage("NotEmpty.product.productPricePurchase", locale));
+			result.addError(error);
+		}
+
 		Date date = new Date();
 		if(!StringUtils.isBlank(product.getDateAvailable())) {
 			try {
@@ -392,6 +402,7 @@ public class ProductController {
 		
 		
 			//get actual product
+			// TODO kouemo joel
 			newProduct = productService.getById(product.getProduct().getId());
 			if(newProduct!=null && newProduct.getMerchantStore().getId().intValue()!=store.getId().intValue()) {
 				return "redirect:/admin/products/products.html";
@@ -427,6 +438,7 @@ public class ProductController {
 							if(price.isDefaultPrice()) {
 								newProductPrice = price;
 								newProductPrice.setProductPriceAmount(submitedPrice);
+								newProductPrice.setProductPricePurchase(submitedPricePurchase);
 								productPriceDescriptions = price.getDescriptions();
 							} else {
 								prices.add(price);
@@ -450,6 +462,7 @@ public class ProductController {
 			newProductPrice = new ProductPrice();
 			newProductPrice.setDefaultPrice(true);
 			newProductPrice.setProductPriceAmount(submitedPrice);
+			newProductPrice.setProductPricePurchase(submitedPricePurchase);
 		}
 		
 		if(product.getProductImage()!=null && product.getProductImage().getId() == null) {
@@ -609,13 +622,14 @@ public class ProductController {
 			availability.setProduct(newProduct);
 
 
-			
+			// TODO kouemo joel
 			Set<ProductPrice> prices = pAvailability.getPrices();
 			for(ProductPrice pPrice : prices) {
 				
 				ProductPrice price = new ProductPrice();
 				price.setDefaultPrice(pPrice.isDefaultPrice());
 				price.setProductPriceAmount(pPrice.getProductPriceAmount());
+				price.setProductPricePurchase(pPrice.getProductPricePurchase());
 				price.setProductAvailability(availability);
 				price.setProductPriceSpecialAmount(pPrice.getProductPriceSpecialAmount());
 				price.setProductPriceSpecialEndDate(pPrice.getProductPriceSpecialEndDate());
@@ -639,6 +653,7 @@ public class ProductController {
 				if(price.isDefaultPrice()) {
 					product.setPrice(price);
 					product.setProductPrice(priceUtil.getAdminFormatedAmount(store, price.getProductPriceAmount()));
+					product.setProductPricePurchase(priceUtil.getAdminFormatedAmount(store, price.getProductPricePurchase()));
 				}
 				
 				availability.getPrices().add(price);
@@ -1050,6 +1065,9 @@ public class ProductController {
 		Menu currentMenu = (Menu)menus.get("catalogue");
 		model.addAttribute("currentMenu",currentMenu);
 		model.addAttribute("activeMenus",activeMenus);
-		//	
+		//
+
+		MerchantStore store = (MerchantStore)request.getAttribute(Constants.ADMIN_STORE);
+		model.addAttribute("benefice",store.getPercentageProfitRate());
 	}
 }

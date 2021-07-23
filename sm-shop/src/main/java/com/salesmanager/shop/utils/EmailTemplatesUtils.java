@@ -292,7 +292,8 @@ public class EmailTemplatesUtils {
 	           templateTokens.put(EmailConstants.EMAIL_CUSTOMER_PASSWORD, customer.getPassword());
 
 	           //shop url
-	           String customerUrl = filePathUtils.buildStoreUri(merchantStore, contextPath);
+			   contextPath = "shop/customer/customLogon.html";
+	           String customerUrl = filePathUtils.buildBaseUrl(contextPath, merchantStore);
 	           templateTokens.put(EmailConstants.CUSTOMER_ACCESS_URL, customerUrl);
 
 	           Email email = new Email();
@@ -423,18 +424,24 @@ public class EmailTemplatesUtils {
 		   /** issue with putting that elsewhere **/ 
 	       LOGGER.info( "Sending download email to customer" );
 	       try {
+			   contextPath = "shop/customer/orders.html";
 
 	           Map<String, String> templateTokens = emailUtils.createEmailObjectsMap(contextPath, merchantStore, messages, customerLocale);
 	           templateTokens.put(EmailConstants.LABEL_HI, messages.getMessage("label.generic.hi", customerLocale));
 	           templateTokens.put(EmailConstants.EMAIL_CUSTOMER_FIRSTNAME, customer.getBilling().getFirstName());
 	           templateTokens.put(EmailConstants.EMAIL_CUSTOMER_LASTNAME, customer.getBilling().getLastName());
-	           String[] downloadMessage = {String.valueOf(ApplicationConstants.MAX_DOWNLOAD_DAYS), String.valueOf(order.getId()), filePathUtils.buildCustomerUri(merchantStore, contextPath), merchantStore.getStoreEmailAddress()};
+
+
+			   String orderId = String.valueOf(order.getId());
+			   String baseUrl = filePathUtils.buildBaseUrl(contextPath, merchantStore);
+			   String storeEmailAddress = merchantStore.getStoreEmailAddress();
+			   String[] downloadMessage = {String.valueOf(ApplicationConstants.MAX_DOWNLOAD_DAYS), orderId, baseUrl, storeEmailAddress};
 	           templateTokens.put(EmailConstants.EMAIL_ORDER_DOWNLOAD, messages.getMessage("email.order.download.text", downloadMessage, customerLocale));
 	           templateTokens.put(EmailConstants.CUSTOMER_ACCESS_LABEL, messages.getMessage("label.customer.accessportal",customerLocale));
 	           templateTokens.put(EmailConstants.ACCESS_NOW_LABEL, messages.getMessage("label.customer.accessnow",customerLocale));
 
 	           //shop url
-	           String customerUrl = filePathUtils.buildStoreUri(merchantStore, contextPath);
+	           String customerUrl = filePathUtils.buildBaseUrl(contextPath, merchantStore);
 	           templateTokens.put(EmailConstants.CUSTOMER_ACCESS_URL, customerUrl);
 
 	           String[] orderInfo = {String.valueOf(order.getId())};

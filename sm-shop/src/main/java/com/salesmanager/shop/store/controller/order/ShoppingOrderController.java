@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import com.salesmanager.core.business.component.TelegramNotifier;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.Validate;
 import org.apache.commons.lang3.StringUtils;
@@ -21,6 +22,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -140,14 +142,18 @@ public class ShoppingOrderController extends AbstractController {
 	@Inject
 	private ProductService productService;
 	
-	//@Inject
-	//private PasswordEncoder passwordEncoder;
+	@Inject
+	private PasswordEncoder passwordEncoder;
 
 	@Inject
 	private EmailTemplatesUtils emailTemplatesUtils;
 	
 	@Inject
 	private OrderProductDownloadService orderProdctDownloadService;
+
+	@Inject
+	private TelegramNotifier telegramNotifier;
+
 	
 	@SuppressWarnings("unused")
 	@RequestMapping("/checkout.html")
@@ -553,7 +559,10 @@ public class ShoppingOrderController extends AbstractController {
 				if(authCustomer==null) {//not authenticated, create a new volatile user
 					modelCustomer = customerFacade.getCustomerModel(customer, store, language);
 					customerFacade.setCustomerModelDefaultProperties(modelCustomer, store);
-					userName = modelCustomer.getNick();
+					//userName = modelCustomer.getNick();
+					password = UserReset.generateRandomString();
+					String encodedPassword = passwordEncoder.encode(password);
+					modelCustomer.setPassword(encodedPassword);
 					LOGGER.debug( "About to persist volatile customer to database." );
 					if(modelCustomer.getDefaultLanguage() == null) {
 						modelCustomer.setDefaultLanguage(languageService.toLanguage(locale));
@@ -564,7 +573,7 @@ public class ShoppingOrderController extends AbstractController {
 					modelCustomer = customerFacade.populateCustomerModel(authCustomer, customer, store, language);
 				}
 			} catch(Exception e) {
-				throw new ServiceException(e);
+				throw new ServiceException(ServiceException.EXCEPTION_ANONYMOUS_USER_EXIST, e.getMessage(), "message.anonymous.user.exist");
 			}
 	        
            
@@ -624,17 +633,18 @@ public class ShoppingOrderController extends AbstractController {
 			        	//already authenticated
 			        } else {
 				        //authenticate
-				        customerFacade.authenticate(modelCustomer, userName, password);
+				        customerFacade.authenticate(modelCustomer, modelCustomer.getNick(), password);
 				        super.setSessionAttribute(Constants.CUSTOMER, modelCustomer, request);
 			        }
-		        	//send new user registration template
-					if(order.getCustomer().getId()==null || order.getCustomer().getId().longValue()==0) {
-						//send email for new customer
-						customer.setPassword(password);//set clear password for email
-						customer.setUserName(userName);
-						emailTemplatesUtils.sendRegistrationEmail( customer, store, locale, request.getContextPath() );
-					}
 	    		}
+
+				//send new user registration template
+				if(order.getCustomer().getId()==null || order.getCustomer().getId().longValue()==0) {
+					//send email for new customer
+					customer.setPassword(password);//set clear password for email
+					customer.setUserName(modelCustomer.getNick());
+					emailTemplatesUtils.sendRegistrationEmail( customer, store, locale, request.getContextPath() );
+				}
 	    		
 				//send order confirmation email to customer
 				emailTemplatesUtils.sendOrderEmail(modelCustomer.getEmailAddress(), modelCustomer, modelOrder, locale, language, store, request.getContextPath());
@@ -646,7 +656,9 @@ public class ShoppingOrderController extends AbstractController {
 	    		
 				//send order confirmation email to merchant
 				emailTemplatesUtils.sendOrderEmail(store.getStoreEmailAddress(), modelCustomer, modelOrder, locale, language, store, request.getContextPath());
-		        
+
+		        //send order confirmation to telegram admin group
+				telegramNotifier.sendmsgOnOrder("nouvelle commande, cmdId: "+modelOrder.getId()+" Montant: "+ modelOrder.getTotal().toString());
 	    		
 	    		
 	        } catch(Exception e) {
@@ -960,7 +972,10 @@ public class ShoppingOrderController extends AbstractController {
             		} else {
             			model.addAttribute("errorMessages", paymentDeclinedMessage);
             		}
-            	}
+            	}else if(se.getExceptionType()==ServiceException.EXCEPTION_ANONYMOUS_USER_EXIST) {
+					String messageLabel = messages.getMessage(se.getMessageCode(), locale, "message.anonymous.user.exist");
+					model.addAttribute("errorMessages", messageLabel);
+				}
             	
             	
             	

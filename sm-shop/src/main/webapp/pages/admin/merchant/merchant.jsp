@@ -309,7 +309,23 @@ function callBackCheckCode(msg,code) {
 	                                   			<span class="help-inline"></span>
 	                        </div>
 	                  </div>
-	                  
+
+	                  <div class="control-group">
+                            <label><s:message code="label.store.priceDollars" text="Price Dollars on FCFA"/></label>
+                            <div class="controls">
+                                        <form:input cssClass="input-medium highlight" path="priceDollars" />
+                                        <span class="help-inline"><form:errors path="priceDollars" cssClass="error" /></span>
+                            </div>
+                      </div>
+
+                      <div class="control-group">
+                            <label><s:message code="label.store.percentageProfitRate" text="Percentage Profit Rate"/></label>
+                            <div class="controls">
+                                        <form:input cssClass="input-medium highlight" path="percentageProfitRate" />
+                                        <span class="help-inline"><form:errors path="percentageProfitRate" cssClass="error" /></span>
+                            </div>
+                      </div>
+
 	                  <div class="control-group">
 	                        <label><s:message code="label.store.baseurl" text="Store base url"/></label>
 	                        <div class="controls">

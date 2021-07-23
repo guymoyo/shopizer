@@ -1,7 +1,9 @@
 package com.salesmanager.core.business.services.catalog.product;
 
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -12,6 +14,7 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+import com.salesmanager.core.business.component.TelegramNotifier;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -88,6 +91,9 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
 
 	@Inject
 	ProductReviewService productReviewService;
+
+	@Inject
+	TelegramNotifier telegramNotifier;
 
 	@Inject
 	public ProductServiceImpl(ProductRepository productRepository) {
@@ -259,6 +265,15 @@ public class ProductServiceImpl extends SalesManagerEntityServiceImpl<Long, Prod
 	@Override
 	public void create(Product product) throws ServiceException {
 		saveOrUpdate(product);
+		/*try {
+			telegramNotifier.sendmsgOrder(product.getProductDescription().getSeUrl());
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		} catch (URISyntaxException e) {
+			e.printStackTrace();
+		}*/
 		searchService.index(product.getMerchantStore(), product);
 	}
 

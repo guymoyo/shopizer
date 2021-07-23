@@ -25,8 +25,8 @@ public class Constants {
 
   public final static String DEFAULT_DATE_FORMAT = "yyyy-MM-dd";
   public final static String DEFAULT_DATE_FORMAT_YEAR = "yyyy";
-  public final static String DEFAULT_LANGUAGE = "en";
-  public final static String DEFAULT_COUNTRY = "CA";
+  public final static String DEFAULT_LANGUAGE = "fr";
+  public final static String DEFAULT_COUNTRY = "CM";
 
   public final static String EMAIL_CONFIG = "EMAIL_CONFIG";
 
@@ -46,7 +46,7 @@ public class Constants {
   public final static String DEFAULT_STORE = "DEFAULT";
 
   public final static Locale DEFAULT_LOCALE = Locale.US;
-  public final static Currency DEFAULT_CURRENCY = Currency.getInstance(Locale.US);
+  public final static Currency DEFAULT_CURRENCY = Currency.getInstance("XAF");
   
   public final static String PAYMENT_MODULES = "PAYMENT";
 

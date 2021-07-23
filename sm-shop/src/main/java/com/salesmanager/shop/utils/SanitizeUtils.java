@@ -21,7 +21,7 @@ public class SanitizeUtils {
             '^', '%','$','(', ')', '{', '}', '<', '>', '[',
             ']', '`', '\'', '~','\\', '?','\'');
     
-    private final static String POLICY_FILE = "antisamy-slashdot.xml";
+    private final static String POLICY_FILE = "antisamy-ebay.xml";
     
     private static Policy policy = null;
     

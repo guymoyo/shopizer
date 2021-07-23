@@ -24,6 +24,7 @@ var priceFormatMessage = '<s:message code="message.price.cents" text="Wrong form
 	$(function(){
 		$('#sku').alphanumeric();
 		$('#productPriceAmount').numeric({allow:"."});
+		$('#productPricePurchase').numeric({allow:"."});
 		$('#quantity').numeric();
 		$('#ordermin').numeric();
 		$('#ordermax').numeric();
@@ -32,12 +33,20 @@ var priceFormatMessage = '<s:message code="message.price.cents" text="Wrong form
 		$('#width').numeric({allow:"."});
 		$('#length').numeric({allow:"."});
 		$('#hight').numeric({allow:"."});
+
+        $('#productPricePurchase').change( function () {
+            var productPricePurchase = parseFloat($('#productPricePurchase').val());
+            var beneficePrct = '<c:out value="${benefice}"/>';
+            var benefice = productPricePurchase * beneficePrct/100;
+            var productPriceAmount = productPricePurchase + benefice;
+            $('#productPriceAmount').val(productPriceAmount);
+        })
+
 		<c:forEach items="${product.descriptions}" var="description" varStatus="counter">		
 			$("#name${counter.index}").friendurl({id : 'seUrl${counter.index}'});
 		</c:forEach>
 	});
 
-	
 	function removeImage(imageId){
 			$("#store.error").show();
 			$.ajax({
@@ -104,7 +113,7 @@ var priceFormatMessage = '<s:message code="message.price.cents" text="Wrong form
 						</c:otherwise>
 					</c:choose>
 					
-				</h3>	
+				</h3>
 				<br/>
 				<c:if test="${product.product.id!=null && product.product.id>0}">
 					<c:forEach items="${product.descriptions}" var="description" varStatus="counter">
@@ -127,7 +136,6 @@ var priceFormatMessage = '<s:message code="message.price.cents" text="Wrong form
 	                                  <span class="help-inline"><s:message code="label.generic.alphanumeric" text="Alphanumeric" /><form:errors path="product.sku" cssClass="error" /></span>
 	                        </div>
                   		</div>
-                  		
                   		<div class="control-group">
 	                        <label><s:message code="label.product.refsku" text="External system identifier"/></label>
 	                        <div class="controls">
@@ -187,18 +195,13 @@ var priceFormatMessage = '<s:message code="message.price.cents" text="Wrong form
                  
 
                   <c:forEach items="${product.descriptions}" var="description" varStatus="counter">
-
-                 
-
-                        <div class="control-group">
-
-                              <label class="required"><s:message code="label.productedit.productname" text="Product name"/> (<c:out value="${description.language.code}"/>)</label>
-                              <div class="controls">
-                                          <form:input cssClass="input-large highlight" id="name${counter.index}" path="descriptions[${counter.index}].name"/>
-                                          <span class="help-inline"><form:errors path="descriptions[${counter.index}].name" cssClass="error" /></span>
-                              </div>
-
-                       </div>
+                    <div class="control-group">
+                        <label class="required"><s:message code="label.productedit.productname" text="Product name"/> (<c:out value="${description.language.code}"/>)</label>
+                        <div class="controls">
+                          <form:input cssClass="input-large highlight" id="name${counter.index}" path="descriptions[${counter.index}].name"/>
+                          <span class="help-inline"><form:errors path="descriptions[${counter.index}].name" cssClass="error" /></span>
+                        </div>
+                    </div>
 
                       
                         <div class="control-group">
@@ -292,35 +295,31 @@ var priceFormatMessage = '<s:message code="message.price.cents" text="Wrong form
 						 <form:hidden path="descriptions[${counter.index}].id" />
 						 <form:hidden path="descriptions[${counter.index}].metatagKeywords" />
 						 <form:hidden path="descriptions[${counter.index}].productExternalDl" />
+				</c:forEach>
 
-                 
+                <div class="control-group">
+                  <label class="required"><s:message code="label.product.price.purchase" text="Price purchase"/></label>
+                  <div class="controls">
+                      <form:input id="productPricePurchase" cssClass="input-large highlight" path="productPricePurchase"/>
+                      <span id="help-price" class="help-inline"><form:errors path="productPricePurchase" cssClass="error" /></span>
+                  </div>
+                </div>
 
-                  </c:forEach>
-
-                 
-
-                 <div class="control-group">
-
-                        <label class="required"><s:message code="label.product.price" text="Price"/></label>
-
-                        <div class="controls">
-                                    <form:input id="productPriceAmount" cssClass="highlight" path="productPrice"/>
-                                    <span id="help-price" class="help-inline"><form:errors path="productPrice" cssClass="error" /></span>
-                        </div>
+                <div class="control-group">
+                    <label class="required"><s:message code="label.product.price" text="Price"/></label>
+                    <div class="controls">
+                        <form:input id="productPriceAmount" cssClass="highlight" path="productPrice"/>
+                        <span id="help-price" class="help-inline"><form:errors path="productPrice" cssClass="error" /></span>
+                    </div>
                   </div>
 
-                 
-
                  <div class="control-group">
-
-                        <label><s:message code="label.productedit.qtyavailable" text="Quantity available"/></label>
+                    <label><s:message code="label.productedit.qtyavailable" text="Quantity available"/></label>
                         <div class="controls">
-                                    <form:input id="quantity" cssClass="highlight" path="availability.productQuantity"/>
-                                    <span class="help-inline"><form:errors path="availability.productQuantity" cssClass="error" /></span>
+                            <form:input id="quantity" cssClass="highlight" path="availability.productQuantity"/>
+                            <span class="help-inline"><form:errors path="availability.productQuantity" cssClass="error" /></span>
                         </div>
                   </div>
-
-                 
 
                   <div class="control-group">
                         <label><s:message code="label.product.ordermin" text="Quantity order minimum"/></label>

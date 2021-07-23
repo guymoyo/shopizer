@@ -184,7 +184,7 @@ public class ProductPriceUtils {
 	 * @throws Exception
 	 */
 	public String getAdminFormatedAmount(MerchantStore store, BigDecimal amount) throws Exception {
-		//TODO Kouemo
+
 		if(amount==null) {
 			return "";
 		}
@@ -241,8 +241,16 @@ public class ProductPriceUtils {
 			currencyInstance = NumberFormat.getCurrencyInstance();//international
 		}
 	    currencyInstance.setCurrency(currency);
-		
-	    
+
+
+		if(currency.getCurrencyCode().equalsIgnoreCase("XAF")) {
+			BigDecimal priceDollars = store.getPriceDollars();
+			if(priceDollars!=null){
+				amount = amount.multiply(priceDollars);
+				currencyInstance.setMaximumFractionDigits(currency.getDefaultFractionDigits());
+			}
+		}
+
 	    return currencyInstance.format(amount.doubleValue());
 		
 
@@ -321,7 +329,7 @@ public class ProductPriceUtils {
 				.toString(DECIMALCOUNT)));
 		nf.setCurrency(curr);
 
-
+		//TODO: copnvert to cfa
 		return nf.format(amount);
 	}
 

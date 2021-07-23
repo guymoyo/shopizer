@@ -42,9 +42,20 @@ response.setDateHeader ("Expires", -1);
 				<td><img src="<c:url value="/resources/img/icon_error.png"/>" width="50"></td>
 				<td><h3><s:message code="message.access.denied" text="Access denied" /></h3></td>
 			</tr>
-
 			</table>
-
+		<br />
+		<div class="col-lg-6 col-md-6 col-sm-6 col-xs-12">
+			<div class="login-title">
+				<h3><s:message code="label.customer.new" text="New customer"/></h3>
+				<span><s:message code="label.customer.faster" text="Creating an account has many benefits: check out faster, keep more than one address, track orders and more."/></span>
+			</div>
+			<a class="btn btn-default login-btn" href="<s:url value="/shop/customer/registration.html"/>"><s:message code="button.label.register" text="Register" /></a>
+			<div class="login-title pt-40">
+				<h3><s:message code="label.customer.registered" text="Registered customer"/></h3>
+				<span><s:message code="label.customer.registered.signinemail" text="If you have an account, sign in with your email address."/></span>
+			</div>
+			<a class="btn btn-default login-btn" href="<s:url value="/shop/customer/customLogon.html"/>"><s:message code="button.label.signin" text="Sign In" /></a>
+		</div>
 	</div>
 
  	</body>
