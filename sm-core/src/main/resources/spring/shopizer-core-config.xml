@@ -121,11 +121,11 @@
 							value="false" />
 			<beans:property name="locations">
 				<beans:list>
-					<beans:value>classpath:profiles/prod-bd/database.properties</beans:value>
-					<beans:value>classpath:profiles/prod-bd/email.properties</beans:value>
-					<beans:value>classpath:profiles/prod-bd/shopizer-core.properties</beans:value>
-					<beans:value>classpath:profiles/prod-bd/authentication.properties</beans:value>
-					<beans:value>classpath:profiles/prod-bd/vault.properties</beans:value>
+					<beans:value>classpath:profiles/prod-vt/database.properties</beans:value>
+					<beans:value>classpath:profiles/prod-vt/email.properties</beans:value>
+					<beans:value>classpath:profiles/prod-vt/shopizer-core.properties</beans:value>
+					<beans:value>classpath:profiles/prod-vt/authentication.properties</beans:value>
+					<beans:value>classpath:profiles/prod-vt/vault.properties</beans:value>
 				</beans:list>
 			</beans:property>
 		</beans:bean>

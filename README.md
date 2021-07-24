@@ -124,7 +124,11 @@ so we can send an invite to our Slack channel
 ./mvnw clean install
 ./mvn package
 
-nohup mvn spring-boot:run -Dspring-boot.run.profiles=prod-vt > trace.log &
+### VT
+nohup mvn spring-boot:run -Dspring-boot.run.arguments=--server.port=8082 -Dspring-boot.run.profiles=prod-vt > trace.log &
+
+### BD
+nohup mvn spring-boot:run -Dspring-boot.run.arguments=--server.port=9092 -Dspring-boot.run.profiles=prod-bd > trace.log &
 
 tail -f trace.log
 
