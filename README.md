@@ -130,5 +130,10 @@ nohup mvn spring-boot:run -Dspring-boot.run.arguments=--server.port=8082 -Dsprin
 ### BD
 nohup mvn spring-boot:run -Dspring-boot.run.arguments=--server.port=9092 -Dspring-boot.run.profiles=prod-bd > trace.log &
 
+
 tail -f trace.log
+
+ps aux | grep java
+
+kill -9 pid
 

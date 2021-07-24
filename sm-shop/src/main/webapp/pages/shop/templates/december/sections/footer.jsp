@@ -143,5 +143,19 @@ response.setDateHeader ("Expires", -1);
 					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12"></div>
 				</div>
 			</div>
+			<script>
+				(function(d,t) {
+					var BASE_URL="http://212.227.30.129:3000";
+					var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
+					g.src=BASE_URL+"/packs/js/sdk.js";
+					s.parentNode.insertBefore(g,s);
+					g.onload=function(){
+						window.chatwootSDK.run({
+							websiteToken: 'Qucb1Co5aG4ET9tG2QeQTG5T',
+							baseUrl: BASE_URL
+						})
+					}
+				})(document,"script");
+			</script>
 		</div>
 		<!-- .copyright-area-end -->
