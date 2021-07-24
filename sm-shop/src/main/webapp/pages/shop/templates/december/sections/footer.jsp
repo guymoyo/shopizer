@@ -151,7 +151,7 @@ response.setDateHeader ("Expires", -1);
 					s.parentNode.insertBefore(g,s);
 					g.onload=function(){
 						window.chatwootSDK.run({
-							websiteToken: 'Qucb1Co5aG4ET9tG2QeQTG5T',
+							websiteToken: '${requestScope.CONFIGS['pinterest']}',
 							baseUrl: BASE_URL
 						})
 					}
