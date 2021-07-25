@@ -656,7 +656,7 @@ function initPayment(paymentSelection) {
 										<div class="country-select">
 											<label><s:message code="label.generic.country" text="Country"/> <span class="required">*</span></label>
 											<form:select cssClass="billing-country-list" path="customer.billing.country" style="background-color: rgb(255, 255, 255);">
-												<form:options items="${countries}" itemValue="isoCode" itemLabel="name"/>
+												<form:options items="${countries}"  itemValue="isoCode" itemLabel="name"/>
 											</form:select>
 										</div>
 									</div>
@@ -785,9 +785,9 @@ function initPayment(paymentSelection) {
 									<div class="col-md-6 hidden">
 										<div class="checkout-form-list zone-select">
 											<label><s:message code="label.customer.shipping.zone" text="Shipping state / province"/> <span class="required">*</span></label>										
-											<form:select cssClass="zone-list" id="deliveryStateList" path="customer.delivery.zone"/>
+											<form:select cssClass="zone-list" id="deliveryStateList" value="0000" path="customer.delivery.zone"/>
 											<s:message code="NotEmpty.customer.shipping.stateProvince" text="Shipping State / Province is required" var="msgShippingState"/>
-											<form:input  class="required" id="deliveryStateProvince"  maxlength="100" name="shippingStateProvince" path="customer.delivery.stateProvince" title="${msgShippingState}"/>
+											<form:input  class="required" id="deliveryStateProvince" value="0000"  maxlength="100" name="shippingStateProvince" path="customer.delivery.stateProvince" title="${msgShippingState}"/>
 										</div>
 									</div>
 									<div class="col-md-6 hidden">
@@ -899,7 +899,8 @@ function initPayment(paymentSelection) {
 								        			<c:otherwise>
 														<c:choose>
 								       						<c:when test="${shippingQuote.freeShipping==true && shippingQuote.freeShippingAmount!=null}" >
-								       							<s:message code="label.shipping.freeshipping.over" text="Free shipping for orders over"/>&nbsp;<strong><sm:monetary value="${shippingQuote.freeShippingAmount}"/></strong>
+								       							<s:message code="label.shipping.freeshipping.over" text="Free shipping for orders over"/>
+																<br/><strong><sm:monetary value="${shippingQuote.freeShippingAmount}"/></strong>
 								       						</c:when>
 								       						<c:otherwise>
 										       				<c:choose>
