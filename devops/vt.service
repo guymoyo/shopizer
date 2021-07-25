@@ -1,0 +1,8 @@
+[Unit]
+Description=Vetements service
+
+[Service]
+ExecStart=~/projets/script/vt.sh
+
+[Install]
+WantedBy=multi-user.target

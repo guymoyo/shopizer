@@ -1,0 +1,8 @@
+[Unit]
+Description=Bande dessine service
+
+[Service]
+ExecStart=~/projets/script/bd.sh
+
+[Install]
+WantedBy=multi-user.target
