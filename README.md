@@ -130,6 +130,11 @@ nohup mvn spring-boot:run -Dspring-boot.run.arguments=--server.port=8082 -Dsprin
 ### BD
 nohup mvn spring-boot:run -Dspring-boot.run.arguments=--server.port=9092 -Dspring-boot.run.profiles=prod-bd > trace.log &
 
+sudo systemctl start vt
+sudo systemctl start bd
+
+sudo systemctl stop vt
+sudo systemctl stop bd
 
 tail -f trace.log
 
