@@ -660,6 +660,16 @@ function initPayment(paymentSelection) {
 											</form:select>
 										</div>
 									</div>
+									<div class="col-md-6">
+										<div class="checkout-form-list zone-select">
+											<label><s:message code="label.generic.stateprovince" text="State / Province"/> <span class="required">*</span></label>
+											<form:select cssClass="zone-list" id="billingStateList" path="customer.billing.zone"/>
+											<s:message code="NotEmpty.customer.billing.stateProvince" text="State / Province is required" var="msgStateProvince"/>
+											<form:input  class="${cssClass}" id="billingStateProvince"  maxlength="100" name="billingStateProvince" path="customer.billing.stateProvince" title="${msgStateProvince}" disabled="${fieldDisabled}"/>
+											<form:errors path="customer.billing.stateProvince" cssClass="error" />
+											<span id="error-customer.billing.stateProvince" class="error"></span>
+										</div>
+									</div>
 									<div class="col-md-12">
 										<div class="checkout-form-list">
 											<label><s:message code="label.generic.city" text="City"/> <span class="required">*</span></label>
@@ -676,16 +686,6 @@ function initPayment(paymentSelection) {
 										    <form:input id="customer.billing.address" cssClass="${cssClass}" path="customer.billing.address" title="${msgAddress}" disabled="${fieldDisabled}"/><!-- geo locate -->
 										    <form:errors path="customer.billing.address" cssClass="error" />
 										    <span id="error-customer.billing.address" class="error"></span>
-										</div>
-									</div>
-									<div class="col-md-6 hidden">
-										<div class="checkout-form-list zone-select">
-											<label><s:message code="label.generic.stateprovince" text="State / Province"/> <span class="required">*</span></label>										
-											<form:select cssClass="zone-list" id="billingStateList" path="customer.billing.zone"/>
-											<s:message code="NotEmpty.customer.billing.stateProvince" text="State / Province is required" var="msgStateProvince"/>
-											<form:input  class="${cssClass}" id="billingStateProvince"  maxlength="100" name="billingStateProvince" path="customer.billing.stateProvince" title="${msgStateProvince}" disabled="${fieldDisabled}"/>
-											<form:errors path="customer.billing.stateProvince" cssClass="error" />
-											<span id="error-customer.billing.stateProvince" class="error"></span>
 										</div>
 									</div>
 									<div class="col-md-6 hidden">

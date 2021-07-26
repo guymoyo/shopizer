@@ -32,98 +32,98 @@ rule "COTE IVOIRE"
     when
         shp:ShippingInputParameters(country == 'CI')
     then
-        decision.setCustomPrice((shp.weight*6535)+"");
+        decision.setCustomPrice((shp.weight*10)+"");
 end
 
 rule "SENEGAL"
     when
         shp:ShippingInputParameters(country == 'SN')
     then
-        decision.setCustomPrice((shp.weight*3594)+"");
+        decision.setCustomPrice((shp.weight*5)+"");
 end
 
 rule "BURKINA FASSO"
     when
         shp:ShippingInputParameters(country == 'BF')
     then
-        decision.setCustomPrice((shp.weight*6062)+"");
+        decision.setCustomPrice((shp.weight*11)+"");
 end
 
 rule "CONGO KINSHA"
     when
         shp:ShippingInputParameters(country == 'CD')
     then
-        decision.setCustomPrice((shp.weight*6062)+"");
+        decision.setCustomPrice((shp.weight*11)+"");
 end
 
 rule "CONGO BRAZZAVILLE"
     when
         shp:ShippingInputParameters(country == 'CG')
     then
-        decision.setCustomPrice((shp.weight*7715)+"");
+        decision.setCustomPrice((shp.weight*14)+"");
 end
 
 rule "GABON"
     when
         shp:ShippingInputParameters(country == 'GA')
     then
-        decision.setCustomPrice((shp.weight*7715)+"");
+        decision.setCustomPrice((shp.weight*14)+"");
 end
 
 rule "TCHAD"
     when
         shp:ShippingInputParameters(country == 'TD')
     then
-        decision.setCustomPrice((shp.weight*4408)+"");
+        decision.setCustomPrice((shp.weight*8)+"");
 end
 
 rule "BENIN"
     when
         shp:ShippingInputParameters(country == 'BG')
     then
-        decision.setCustomPrice((shp.weight*6062)+"");
+        decision.setCustomPrice((shp.weight*11)+"");
 end
 
 rule "TOGO"
     when
         shp:ShippingInputParameters(country == 'TG')
     then
-        decision.setCustomPrice((shp.weight*6062)+"");
+        decision.setCustomPrice((shp.weight*11)+"");
 end
 
 rule "MALI"
     when
         shp:ShippingInputParameters(country == 'ML')
     then
-        decision.setCustomPrice((shp.weight*5511)+"");
+        decision.setCustomPrice((shp.weight*10)+"");
 end
 
 rule "GUINEE CONAKRY"
     when
         shp:ShippingInputParameters(country == 'GN')
     then
-        decision.setCustomPrice((shp.weight*5235)+"");
+        decision.setCustomPrice((shp.weight*9)+"");
 end
 
 rule "MAURITANIE"
     when
         shp:ShippingInputParameters(country == 'MR')
     then
-        decision.setCustomPrice((shp.weight*4408)+"");
+        decision.setCustomPrice((shp.weight*8)+"");
 end
 
 rule "NIGERIA"
     when
         shp:ShippingInputParameters(country == 'NG')
     then
-        decision.setCustomPrice((shp.weight*3857)+"");
+        decision.setCustomPrice((shp.weight*7)+"");
 end
 
 rule "CAMEROUN"
     when
         shp:ShippingInputParameters(country == 'CM')
     then
-        decision.setCustomPrice((shp.weight*4684)+"");
+        decision.setCustomPrice((shp.weight*8.5)+"");
 end
 
 
