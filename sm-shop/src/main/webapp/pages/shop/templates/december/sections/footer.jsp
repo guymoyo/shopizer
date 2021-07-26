@@ -143,11 +143,11 @@ response.setDateHeader ("Expires", -1);
 					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12"></div>
 				</div>
 			</div>
-			<c:if test="${requestScope.CONFIGS['pinterest'] == vt}">
-				<c:set var="websiteToken" value="Qucb1Co5aG4ET9tG2QeQTG5T" />
+			<c:if test="${requestScope.CONFIGS['pinterest'] == 'vt'}">
+				<c:set var="websiteToken" value="TrS3Y7WaPpDoFhpammKgcrJX" />
 				<c:set var="ym" value="83326762" />
 			</c:if>
-			<c:if test="${requestScope.CONFIGS['pinterest'] == bd}">
+			<c:if test="${requestScope.CONFIGS['pinterest'] == 'bd'}">
 				<c:set var="websiteToken" value="" />
 				<c:set var="ym" value="" />
 			</c:if>
