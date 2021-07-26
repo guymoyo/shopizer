@@ -12,5 +12,5 @@ rule "Bam0520"
         OrderTotalInputParameters(promoCode == 'Test1234')
         OrderTotalInputParameters(date < "31-Oct-2025")
     then
-        total.setDiscount(20.0);
+        total.setDiscount(0.20);
 end
