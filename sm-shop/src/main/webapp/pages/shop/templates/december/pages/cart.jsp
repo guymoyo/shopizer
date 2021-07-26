@@ -224,7 +224,7 @@
 														href="<c:url value="/shop"/>"><s:message
 															code="button.label.continue" text="Continue shopping" /></a>
 												</div>
-												<%--<div class="coupon">
+												<div class="coupon">
 													<h3>
 													<s:message
 															code="label.order.promocode.title" text="Promotion code" /></h3>
@@ -233,7 +233,7 @@
 															code="label.order.promocode.text" text="Enter your promotion code if you have one." />
 													</p>
 													<input type="text" id="promoCode" name="promoCode" placeholder="Promo code" />
-												</div>--%>
+												</div>
 											</div>
 											<div class="col-lg-4 col-md-4 col-sm-5 col-xs-12">
 												<div class="cart_totals">

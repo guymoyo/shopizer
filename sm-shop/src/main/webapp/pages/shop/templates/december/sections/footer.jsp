@@ -39,9 +39,9 @@ response.setDateHeader ("Expires", -1);
 								   <c:if test="${requestScope.CONFIGS['facebook_page_url'] != null}">
 								   <li class="facebook"><a target="_blank" href="<c:out value="${requestScope.CONFIGS['facebook_page_url']}"/>"><i class="fa fa-facebook-square fa-2x"></i></a></li>
 								   </c:if>
-								   <c:if test="${requestScope.CONFIGS['pinterest'] != null}">
+								   <%--<c:if test="${requestScope.CONFIGS['pinterest'] != null}">
 								   <li class="pinterest"><a target="_blank" href="<c:out value="${requestScope.CONFIGS['pinterest']}"/>"><i class="fa fa-pinterest fa-2x"></i></a></li>
-								   </c:if>
+								   </c:if>--%>
 								   <c:if test="${requestScope.CONFIGS['instagram'] != null}">
 							   	   <li class="instagram"><a target="_blank" href="<c:out value="${requestScope.CONFIGS['instagram']}"/>"><i class="fa fa-instagram fa-2x"></i></a></li>
 							       </c:if>
@@ -143,6 +143,14 @@ response.setDateHeader ("Expires", -1);
 					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12"></div>
 				</div>
 			</div>
+			<c:if test="${requestScope.CONFIGS['pinterest'] == vt}">
+				<c:set var="websiteToken" value="Qucb1Co5aG4ET9tG2QeQTG5T" />
+				<c:set var="ym" value="83326762" />
+			</c:if>
+			<c:if test="${requestScope.CONFIGS['pinterest'] == bd}">
+				<c:set var="websiteToken" value="" />
+				<c:set var="ym" value="" />
+			</c:if>
 			<script>
 				(function(d,t) {
 					var BASE_URL="http://212.227.30.129:3000";
@@ -151,11 +159,34 @@ response.setDateHeader ("Expires", -1);
 					s.parentNode.insertBefore(g,s);
 					g.onload=function(){
 						window.chatwootSDK.run({
-							websiteToken: '${requestScope.CONFIGS['pinterest']}',
+							websiteToken: '${websiteToken}',
 							baseUrl: BASE_URL
 						})
 					}
 				})(document,"script");
+
+				window.addEventListener('chatwoot:ready', function () {
+					window.$chatwoot.setLocale('fr');
+					window.chatwootSettings = {
+						type: 'expanded_bubble',
+						launcherTitle: 'Chat with us'
+					}
+				});
 			</script>
+			<!-- Yandex.Metrika counter -->
+			<script type="text/javascript" >
+				(function(m,e,t,r,i,k,a){m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+					m[i].l=1*new Date();k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)})
+				(window, document, "script", "https://mc.yandex.ru/metrika/tag.js", "ym");
+
+				ym(${ym}, "init", {
+					clickmap:true,
+					trackLinks:true,
+					accurateTrackBounce:true,
+					webvisor:true
+				});
+			</script>
+			<noscript><div><img src="https://mc.yandex.ru/watch/83326762" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+			<!-- /Yandex.Metrika counter -->
 		</div>
 		<!-- .copyright-area-end -->
