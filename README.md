@@ -136,7 +136,8 @@ sudo systemctl start bd
 sudo systemctl stop vt
 sudo systemctl stop bd
 
-tail -f trace.log
+sudo journalctl -f -u vt  (live)
+sudo journalctl -u vt  (ancien)
 
 ps aux | grep java
 
