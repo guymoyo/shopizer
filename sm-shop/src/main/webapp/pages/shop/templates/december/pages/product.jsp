@@ -272,7 +272,7 @@
 				<!-- customer review -->
 
 				<!-- Related items -->
-				<div class="col-lg-3 col-md-3 col-sm-12 col-xs-12">
+				<div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
 					<c:if test="${relatedProducts!=null}">
 						<div
 							class="feature-preduct-area hyperion home-page-2 pb-50 pb-50-md"
@@ -289,14 +289,10 @@
 							</div>
 							<div class="row">
 								<div class="col-lg-12">
-									<div>
-										<div>
 											<!-- Iterate over featuredItems -->
 											<c:set var="ITEMS" value="${relatedProducts}" scope="request" />
 											<jsp:include
 												page="/pages/shop/templates/generic/sections/productBox.jsp" />
-										</div>
-									</div>
 								</div>
 							</div>
 						</div>

@@ -34,6 +34,13 @@ var priceFormatMessage = '<s:message code="message.price.cents" text="Wrong form
 		$('#length').numeric({allow:"."});
 		$('#hight').numeric({allow:"."});
 
+		//generate sku and refsku
+        if(!$('#sku').val()){
+            var random = Math.random().toString(36).substr(2, 6);
+            $('#sku').val(random);
+            $('#refSku').val(random);
+        }
+
         $('#productPricePurchase').change( function () {
             var productPricePurchase = parseFloat($('#productPricePurchase').val());
             var beneficePrct = '<c:out value="${benefice}"/>';
