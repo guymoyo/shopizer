@@ -149,11 +149,11 @@ response.setDateHeader ("Expires", -1);
 			</c:if>
 			<c:if test="${requestScope.CONFIGS['pinterest'] == 'bd'}">
 				<c:set var="websiteToken" value="XDfuEkNsWSp7GJqeK4qD52em" />
-				<c:set var="ym" value="" />
+				<c:set var="ym" value="83397475" />
 			</c:if>
 			<script>
 				(function(d,t) {
-					var BASE_URL="https://chatwoot.djome.com";
+					var BASE_URL="https://chatwoot.online";
 					var g=d.createElement(t),s=d.getElementsByTagName(t)[0];
 					g.src=BASE_URL+"/packs/js/sdk.js";
 					s.parentNode.insertBefore(g,s);
