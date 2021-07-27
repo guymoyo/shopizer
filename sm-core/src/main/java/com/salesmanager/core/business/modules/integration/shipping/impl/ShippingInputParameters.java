@@ -3,7 +3,7 @@ package com.salesmanager.core.business.modules.integration.shipping.impl;
 public class ShippingInputParameters {
 	
 	private String moduleName;
-	private long weight;
+	private double weight;
 	private long volume;
 	private String country;
 	private String province;
@@ -18,10 +18,10 @@ public class ShippingInputParameters {
 	public void setModuleName(String moduleName) {
 		this.moduleName = moduleName;
 	}
-	public long getWeight() {
+	public double getWeight() {
 		return weight;
 	}
-	public void setWeight(long weight) {
+	public void setWeight(double weight) {
 		this.weight = weight;
 	}
 	public long getVolume() {

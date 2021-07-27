@@ -111,7 +111,7 @@ public class CustomShippingQuoteRules implements ShippingQuoteModule {
 		//Build a ShippingInputParameters
 		ShippingInputParameters inputParameters = new ShippingInputParameters();
 		
-		inputParameters.setWeight((long)weight.doubleValue());
+		inputParameters.setWeight(weight.doubleValue());
 		inputParameters.setCountry(delivery.getCountry().getIsoCode());
 		inputParameters.setProvince("*");
 		inputParameters.setModuleName(module.getCode());

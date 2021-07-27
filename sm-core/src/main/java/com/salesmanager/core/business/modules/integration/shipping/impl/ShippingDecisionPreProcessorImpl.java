@@ -108,7 +108,7 @@ public class ShippingDecisionPreProcessorImpl implements ShippingQuotePrePostPro
 		//Build a ShippingInputParameters
 		ShippingInputParameters inputParameters = new ShippingInputParameters();
 		
-		inputParameters.setWeight((long)weight.doubleValue());
+		inputParameters.setWeight(weight.doubleValue());
 		inputParameters.setCountry(delivery.getCountry().getIsoCode());
 		if(delivery.getZone()!=null && delivery.getZone().getCode()!=null) {
 			inputParameters.setProvince(delivery.getZone().getCode());
