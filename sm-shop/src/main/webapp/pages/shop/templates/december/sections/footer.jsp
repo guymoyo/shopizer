@@ -165,13 +165,6 @@ response.setDateHeader ("Expires", -1);
 					}
 				})(document,"script");
 
-				window.addEventListener('chatwoot:ready', function () {
-					window.$chatwoot.setLocale('fr');
-					window.chatwootSettings = {
-						type: 'expanded_bubble',
-						launcherTitle: 'Chat with us'
-					}
-				});
 			</script>
 			<!-- Yandex.Metrika counter -->
 			<script type="text/javascript" >
