@@ -165,9 +165,9 @@ public class ShopProductController {
 		pageInformation.setPageUrl(productProxy.getDescription().getFriendlyUrl());
 		if(productProxy.getImage()!=null) {
 			MerchantStore merchantStore = (MerchantStore)request.getAttribute(Constants.MERCHANT_STORE);
-			StringBuilder imageUrl = new StringBuilder(filePathUtils.buildStoreForwardedUri(merchantStore, request));
-			imageUrl.append(productProxy.getImage().getImageUrl());
-			pageInformation.setPageImageUrl(imageUrl.toString());
+			//StringBuilder imageUrl = new StringBuilder(filePathUtils.buildStoreForwardedUri(merchantStore, request));
+			//imageUrl.append(productProxy.getImage().getImageUrl());
+			pageInformation.setPageImageUrl(productProxy.getImage().getImageUrl());
 		}
 		
 		request.setAttribute(Constants.REQUEST_PAGE_INFORMATION, pageInformation);
