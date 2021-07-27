@@ -148,7 +148,7 @@ response.setDateHeader ("Expires", -1);
 				<c:set var="ym" value="83326762" />
 			</c:if>
 			<c:if test="${requestScope.CONFIGS['pinterest'] == 'bd'}">
-				<c:set var="websiteToken" value="" />
+				<c:set var="websiteToken" value="XDfuEkNsWSp7GJqeK4qD52em" />
 				<c:set var="ym" value="" />
 			</c:if>
 			<script>
