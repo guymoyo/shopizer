@@ -152,7 +152,7 @@
 										<img src="/resources/img/payment/momo/momo.jpeg"  alt="Moyen de paiement" />&nbsp;
 									</div>
 									<div>
-										<a href="https://wa.me/<c:out value="${requestScope.MERCHANT_STORE.storephone}"/>?text=${requestScope.MERCHANT_STORE.domainName}/shop/product/${product.description.friendlyUrl}.html"  target="_blank" ><img src="/resources/img/payment/momo/whazap.png"  alt="Question? click and chat." /></a>
+										<a href="https://api.whatsapp.com/send?text=${requestScope.MERCHANT_STORE.domainName}/shop/product/${product.description.friendlyUrl}.html"  target="_blank" ><img src="/resources/img/payment/momo/whazap.png"  alt="Question? click and chat." /></a>
 									</div>
 							</div>
 						</div>
