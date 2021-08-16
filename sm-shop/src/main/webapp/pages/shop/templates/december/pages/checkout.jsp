@@ -110,12 +110,12 @@ $(document).ready(function() {
 	bindActions();
 
 	<c:if test="${order.customer.billing.country!=null}">
-		$('.billing-country-list').val('${order.customer.billing.country}');
+		$('.billing-country-list').val('');
 		//apply mask
 		setCountrySettings('billing','${order.customer.billing.country}');
 	</c:if>
 	<c:if test="${order.customer.delivery.country!=null}">
-		$('.shipping-country-list').val('${order.customer.delivery.country}');
+		$('.shipping-country-list').val('');
 		//apply mask
 		setCountrySettings('delivery','${order.customer.delivery.country}');
 	</c:if>
@@ -192,7 +192,7 @@ $(document).ready(function() {
 	
 	//console.log(address);
 	displayConfirmShipping(address,shippingMethod,useDistanceWindow);
-	
+
 
 });
 
@@ -234,6 +234,10 @@ function isFormValid() {
 					valid = false;
 				}
 			}
+		}
+
+		if($('.billing-country-list').val()==null){
+			valid=false;
 		}
 	});
 	
@@ -312,7 +316,7 @@ function isCheckoutFieldValid(field) {
 			}
 		}
 	</c:if>
-	
+
 
 	
 	if(!validateField) {
@@ -439,6 +443,11 @@ function bindActions() {
     //final order submission button
 	$("#submitOrder").click(function(e) {
 		e.preventDefault();//do not submit form
+
+		//Set state to default
+		$('#deliveryStateProvince').val("default");
+		$('#billingStateProvince').val("default");
+
 		formValid = isFormValid();
 		resetErrorMessage();
 		setCountrySettings('billing',$('.billing-country-list').val());
@@ -660,7 +669,7 @@ function initPayment(paymentSelection) {
 											</form:select>
 										</div>
 									</div>
-									<div class="col-md-6">
+									<div class="col-md-6" hidden>
 										<div class="checkout-form-list zone-select">
 											<label><s:message code="label.generic.stateprovince" text="State / Province"/> <span class="required">*</span></label>
 											<form:select cssClass="zone-list" id="billingStateList" path="customer.billing.zone"/>
@@ -785,9 +794,9 @@ function initPayment(paymentSelection) {
 									<div class="col-md-6 hidden">
 										<div class="checkout-form-list zone-select">
 											<label><s:message code="label.customer.shipping.zone" text="Shipping state / province"/> <span class="required">*</span></label>										
-											<form:select cssClass="zone-list" id="deliveryStateList" value="0000" path="customer.delivery.zone"/>
+											<form:select cssClass="zone-list" id="deliveryStateList" value="default" path="customer.delivery.zone"/>
 											<s:message code="NotEmpty.customer.shipping.stateProvince" text="Shipping State / Province is required" var="msgShippingState"/>
-											<form:input  class="required" id="deliveryStateProvince" value="0000"  maxlength="100" name="shippingStateProvince" path="customer.delivery.stateProvince" title="${msgShippingState}"/>
+											<form:input  class="required" id="deliveryStateProvince"  maxlength="100" name="shippingStateProvince" path="customer.delivery.stateProvince" title="${msgShippingState}"/>
 										</div>
 									</div>
 									<div class="col-md-6 hidden">

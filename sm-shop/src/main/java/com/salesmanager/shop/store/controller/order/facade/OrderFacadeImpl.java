@@ -758,14 +758,14 @@ public class OrderFacadeImpl implements OrderFacade {
 						messages.getMessage("NotEmpty.customer.billing.country", locale));
 			}
 
-			if (StringUtils.isBlank(order.getCustomer().getBilling().getZone())
+			/*if (StringUtils.isBlank(order.getCustomer().getBilling().getZone())
 					&& StringUtils.isBlank(order.getCustomer().getBilling().getStateProvince())) {
 				FieldError error = new FieldError("customer.billing.stateProvince", "customer.billing.stateProvince",
 						messages.getMessage("NotEmpty.customer.billing.stateProvince", locale));
 				bindingResult.addError(error);
 				messagesResult.put("customer.billing.stateProvince",
 						messages.getMessage("NotEmpty.customer.billing.stateProvince", locale));
-			}
+			}*/
 
 			if (StringUtils.isBlank(order.getCustomer().getBilling().getPhone())) {
 				FieldError error = new FieldError("customer.billing.phone", "customer.billing.phone",
@@ -774,14 +774,14 @@ public class OrderFacadeImpl implements OrderFacade {
 				messagesResult.put("customer.billing.phone",
 						messages.getMessage("NotEmpty.customer.billing.phone", locale));
 			}
-
+/*
 			if (StringUtils.isBlank(order.getCustomer().getBilling().getPostalCode())) {
 				FieldError error = new FieldError("customer.billing.postalCode", "customer.billing.postalCode",
 						messages.getMessage("NotEmpty.customer.billing.postalCode", locale));
 				bindingResult.addError(error);
 				messagesResult.put("customer.billing.postalCode",
 						messages.getMessage("NotEmpty.customer.billing.postalCode", locale));
-			}
+			}*/
 
 			if (!order.isShipToBillingAdress()) {
 
