@@ -323,6 +323,14 @@ $(document).ready(function() {
     <!-- end col -->
     <div class="col-sm-7 vertical-align text-center">
 
+		<c:choose>
+			<c:when test="${requestScope.CONTENT['headerMessage']!=null}">
+				<sm:pageContent contentCode="headerMessage"/>
+			</c:when>
+			<c:otherwise>
+			</c:otherwise>
+		</c:choose>
+
 	  <c:if test="${requestScope.CONFIGS['displaySearchBox'] == true}">
       <form>
         <div class="row grid-space-1">

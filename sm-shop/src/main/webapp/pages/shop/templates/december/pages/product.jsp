@@ -154,6 +154,12 @@
 									<div>
 										<a href="https://api.whatsapp.com/send?text=${requestScope.MERCHANT_STORE.domainName}/shop/product/${product.description.friendlyUrl}.html"  target="_blank" ><img src="/resources/img/payment/momo/whazap.png"  alt="Question? click and chat." /></a>
 									</div>
+									<div>
+										<span class="message" >
+											<s:message
+													code="label.product.livraison" text="Livraison: 1 à 7 jours" />
+										</span>
+									</div>
 							</div>
 						</div>
 					</div>
