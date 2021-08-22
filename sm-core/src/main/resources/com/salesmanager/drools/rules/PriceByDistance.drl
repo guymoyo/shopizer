@@ -126,6 +126,28 @@ rule "CAMEROUN"
         decision.setCustomPrice((shp.weight*8.5)+"");
 end
 
+rule "FRANCE"
+    when
+        shp:ShippingInputParameters(country == 'FR')
+    then
+        decision.setCustomPrice((shp.weight*7)+"");
+end
+
+rule "BELGIQUE"
+    when
+        shp:ShippingInputParameters(country == 'BE')
+    then
+        decision.setCustomPrice((shp.weight*7)+"");
+end
+
+rule "ALLEMAGNE"
+    when
+        shp:ShippingInputParameters(country == 'DE')
+    then
+        decision.setCustomPrice((shp.weight*7)+"");
+end
+
+
 
 /*rule "530 kilometers or less"
     when

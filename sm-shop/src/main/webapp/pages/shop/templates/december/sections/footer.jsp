@@ -136,7 +136,7 @@ response.setDateHeader ("Expires", -1);
 					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">
 						<c:if test="${requestScope.CONFIGS['allowPurchaseItems'] == true}">
 						<div class="copyright-img text-right">
-							<img src="/resources/img/payment/momo/momo.jpeg" width="100" alt="" />&nbsp;
+							<img src="/resources/img/payment/momo/cinetpay_latest_line.png"  alt="" />&nbsp;
 						</div>
 						</c:if>
 					</div>

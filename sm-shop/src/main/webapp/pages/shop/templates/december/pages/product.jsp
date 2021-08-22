@@ -149,7 +149,7 @@
 							</div>
 							<div class="col-lg-2 col-md-2 col-sm-2 col-xs-12 pt-80">
 									<div class="">
-										<img src="/resources/img/payment/momo/momo.jpeg"  alt="Moyen de paiement" />&nbsp;
+										<img src="/resources/img/payment/momo/img.png"  alt="" />&nbsp;
 									</div>
 									<div>
 										<a href="https://api.whatsapp.com/send?text=${requestScope.MERCHANT_STORE.domainName}/shop/product/${product.description.friendlyUrl}.html"  target="_blank" ><img src="/resources/img/payment/momo/whazap.png"  alt="Question? click and chat." /></a>
