@@ -233,7 +233,7 @@ public class ShoppingOrderPaymentController extends AbstractController {
 
 						Transaction transaction = p.initTransaction(store, null, orderTotalSummary.getTotal(), payment,
 								config, integrationModule, order.getCustomer().getBilling().getCountry(),
-								order.getCustomer().getFirstName(), order.getCustomer().getLastName(), order.getId());
+								order.getCustomer().getBilling().getFirstName(), order.getCustomer().getBilling().getLastName(), order.getId());
 
 						transactionService.create(transaction);
 

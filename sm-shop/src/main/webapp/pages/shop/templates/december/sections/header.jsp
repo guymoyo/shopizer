@@ -304,7 +304,8 @@ $(document).ready(function() {
 						                		<c:when test="${not empty requestScope.MERCHANT_STORE.storeLogo}">
 						                			<!--  use merchant store logo -->
 						                			<a class="grey store-name" href="<c:url value="/shop/"/>">
-						                			<img class="logoImage" style="max-width:140px;" src="<sm:storeLogo/>"/>
+						                			<%--<img class="logoImage" style="max-width:140px;" src="<sm:storeLogo/>"/>--%>
+														<img class="logoImage" style="max-width:140px;" src="https://djome.com/static/files/DEFAULT/LOGO/Logo2.png"/>
 						                			</a>
 						                		</c:when>
 						                		<c:otherwise>
