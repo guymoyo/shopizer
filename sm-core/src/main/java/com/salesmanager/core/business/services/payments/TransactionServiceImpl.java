@@ -205,4 +205,11 @@ public class TransactionServiceImpl  extends SalesManagerEntityServiceImpl<Long,
 		return transactionRepository.findByDates(startDate, endDate);
 	}
 
+	@Override
+	public Boolean isOrderAlreadyPay(Long orderId) {
+
+		List<Transaction> transactions = transactionRepository.findByOrder(orderId);
+		return transactions.stream().anyMatch(tx -> TransactionType.AUTHORIZECAPTURE.equals(tx.getTransactionType()));
+	}
+
 }

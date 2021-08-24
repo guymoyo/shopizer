@@ -111,8 +111,8 @@ public class PayPalExpressCheckoutPayment implements PaymentModule {
 
 	@Override
 	public Transaction initTransaction(MerchantStore store, Customer customer,
-			BigDecimal amount, Payment payment,
-			IntegrationConfiguration configuration, IntegrationModule module)
+									   BigDecimal amount, Payment payment,
+									   IntegrationConfiguration configuration, IntegrationModule module, String country, String firstName, String lastName, Long id)
 			throws IntegrationException {
 		
 			throw new IntegrationException("Not imlemented");

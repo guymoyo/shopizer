@@ -130,7 +130,7 @@ response.setDateHeader ("Expires", -1);
 				<div class="row">
 					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12 mar_b-30">
 						<div class="copyright text-left">
-							<p><sm:storeCopy/></p>
+							<p><sm:storeCopy/></p> <span>&nbsp;Registre de commerce N° RC/DLN/2020/A/2167</span>
 						</div>
 					</div>
 					<div class="col-lg-4 col-md-4 col-sm-4 col-xs-12">

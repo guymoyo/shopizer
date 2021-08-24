@@ -504,7 +504,15 @@ function bindActions() {
 			//console.log('Beanstream ');
 			$('#paymentMethodType').val('CREDITCARD');
 			submitForm();
-		} else {
+		}
+		else if(paymentSelection.indexOf('cinetpay') >= 0) {
+			log('cinetpay ' + $('input[name=paymentMethodType]').val());
+			$('#paymentMethodType').attr("value", 'CINETPAY');
+			log('Payment method type -> ' + $('input[name=paymentMethodType]').val());
+			initPayment('CINETPAY');
+		}
+
+		else {
 			//submit form
 			submitForm();
 			
@@ -1260,7 +1268,7 @@ $(document).ready(function() {
 							 						<c:forEach items="${shippingQuote.shippingOptions}" var="option" varStatus="status">
 														<label class="radio">
 															<input type="radio" name="selectedShippingOption.optionId" class="shippingOption" code="${option.shippingModuleCode}" id="${option.optionId}" value="${option.optionId}" <c:if test="${shippingQuote.selectedShippingOption!=null && shippingQuote.selectedShippingOption.optionId==option.optionId}">checked="checked"</c:if>> 
-															<s:message code="module.shipping.${option.shippingModuleCode}" arguments="${requestScope.MERCHANT_STORE.storename}" text="${option.shippingModuleCode}"/> - ${option.optionPriceText}
+															<s:message code="module.shipping.${option.shippingModuleCode}" arguments="${requestScope.MERCHANT_STORE.storename}" text="${option.shippingModuleCode}"/>: ${option.optionPriceText}
 															<c:if test="${option.note!=null}">
 																<br/><small><c:out value="${option.note}"/></small>
 															</c:if>

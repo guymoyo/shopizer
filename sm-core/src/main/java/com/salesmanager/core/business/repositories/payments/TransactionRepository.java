@@ -19,4 +19,5 @@ public interface TransactionRepository extends JpaRepository<Transaction, Long> 
 	List<Transaction> findByDates(
 			@Param("from") @Temporal(javax.persistence.TemporalType.TIMESTAMP) Date startDate, 
 			@Param("to") @Temporal(javax.persistence.TemporalType.TIMESTAMP) Date endDate);
+
 }

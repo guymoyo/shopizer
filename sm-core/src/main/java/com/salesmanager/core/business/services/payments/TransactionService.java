@@ -30,6 +30,8 @@ public interface TransactionService extends SalesManagerEntityService<Long, Tran
 	
 	Transaction lastTransaction(Order order, MerchantStore store) throws ServiceException;
 
+	Boolean isOrderAlreadyPay(Long orderId);
+
 
 
 }

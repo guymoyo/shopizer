@@ -311,9 +311,9 @@ ul.sidebar li a h1,ul.sidebar li a h2,ul.sidebar li a h3,ul.sidebar li a h4,ul.s
 						<p>
 							${EMAIL_DISCLAIMER}
 						</p>
-						<p>
+						<#--<p>
 							${EMAIL_SPAM_DISCLAIMER}
-						</p>
+						</p>-->
 						<p>
 							${EMAIL_FOOTER_COPYRIGHT}
 						</p>

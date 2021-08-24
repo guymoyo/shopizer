@@ -79,7 +79,7 @@ public class BraintreePayment implements PaymentModule {
 
 	@Override
 	public Transaction initTransaction(MerchantStore store, Customer customer, BigDecimal amount, Payment payment,
-			IntegrationConfiguration configuration, IntegrationModule module) throws IntegrationException {
+									   IntegrationConfiguration configuration, IntegrationModule module, String country, String firstName, String lastName, Long id) throws IntegrationException {
 
 		Validate.notNull(configuration,"Configuration cannot be null");
 		

@@ -375,7 +375,7 @@ public class PaymentServiceImpl implements PaymentService {
 		} else if(transactionType == TransactionType.AUTHORIZECAPTURE)  {
 			transaction = module.authorizeAndCapture(store, customer, items, amount, payment, configuration, integrationModule);
 		} else if(transactionType == TransactionType.INIT)  {
-			transaction = module.initTransaction(store, customer, amount, payment, configuration, integrationModule);
+			transaction = module.initTransaction(store, customer, amount, payment, configuration, integrationModule, customer.getBilling().getCountry().getIsoCode(), customer.getNick(), customer.getNick(), order.getId());
 		}
 
 
@@ -732,7 +732,7 @@ public class PaymentServiceImpl implements PaymentService {
 		
 		IntegrationModule integrationModule = getPaymentMethodByCode(store,payment.getModuleName());
 
-		return module.initTransaction(store, customer, amount, payment, configuration, integrationModule);
+		return module.initTransaction(store, customer, amount, payment, configuration, integrationModule, order.getBilling().getCountry().getIsoCode(), order.getBilling().getFirstName(), order.getBilling().getLastName(), order.getId());
 	}
 
 	@Override
@@ -770,7 +770,7 @@ public class PaymentServiceImpl implements PaymentService {
 		
 		IntegrationModule integrationModule = getPaymentMethodByCode(store,payment.getModuleName());
 		
-		Transaction transaction = module.initTransaction(store, customer, amount, payment, configuration, integrationModule);
+		Transaction transaction = module.initTransaction(store, customer, amount, payment, configuration, integrationModule, null, null, null, null);
 		
 		transactionService.save(transaction);
 

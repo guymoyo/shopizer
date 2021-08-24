@@ -428,7 +428,7 @@ function bindActions() {
      
      $(".paymentMethodSelected").click(function() { 
     	 var paymentClicked = $(this).attr("name");
-    	 //console.log('Selected payment' + paymentClicked);
+    	 console.log('Selected payment' + paymentClicked);
     	 setPaymentModule(paymentClicked);
     	 isFormValid();
      });
@@ -496,7 +496,14 @@ function bindActions() {
 		else if(paymentSelection.indexOf('beanstream') >= 0) {
 			$('#paymentMethodType').attr("value", 'CREDITCARD');
 			submitForm();
-		} else {
+		}
+		else if(paymentSelection.indexOf('cinetpay') >= 0) {
+			log('cinetpay ' + $('input[name=paymentMethodType]').val());
+			$('#paymentMethodType').attr("value", 'CINETPAY');
+			log('Payment method type -> ' + $('input[name=paymentMethodType]').val());
+			initPayment('CINETPAY');
+		}
+		else {
 			//submit form
 			submitForm();	
 		}
@@ -527,7 +534,7 @@ function initPayment(paymentSelection) {
 					
 					var data = resp.url;
 					//console.log(resp.url);
-					location.href=resp.url;
+					location.href=resp.PAYMENT_URL;
 
 				} else if(status==-2) {//validation issues
 					
@@ -893,7 +900,8 @@ function initPayment(paymentSelection) {
 															</td>
 															<td style="border: none !important;">
 															<label>
-																<s:message code="module.shipping.${option.shippingModuleCode}" arguments="${requestScope.MERCHANT_STORE.storename}" text="${option.shippingModuleCode}"/>: <span class="amount">${option.optionPriceText}</span>
+																<%--<s:message code="module.shipping.${option.shippingModuleCode}" arguments="${requestScope.MERCHANT_STORE.storename}" text="${option.shippingModuleCode}"/>: <span class="amount">${option.optionPriceText}</span>--%>
+																	Livraison: <span class="amount">${option.optionPriceText}</span>
 															</label>
 															</td>
 															</tr>

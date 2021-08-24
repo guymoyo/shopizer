@@ -87,8 +87,8 @@ public class StripePayment implements PaymentModule {
 
 	@Override
 	public Transaction initTransaction(MerchantStore store, Customer customer,
-			BigDecimal amount, Payment payment,
-			IntegrationConfiguration configuration, IntegrationModule module)
+                                       BigDecimal amount, Payment payment,
+                                       IntegrationConfiguration configuration, IntegrationModule module, String country, String firstName, String lastName, Long id)
 			throws IntegrationException {
       Validate.notNull(configuration,"Configuration cannot be null");
       String publicKey = configuration.getIntegrationKeys().get("publishableKey");

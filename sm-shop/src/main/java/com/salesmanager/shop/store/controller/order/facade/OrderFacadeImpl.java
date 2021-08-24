@@ -539,6 +539,17 @@ public class OrderFacadeImpl implements OrderFacade {
 
 			}
 
+			if (PaymentType.CINETPAY.name().equals(paymentType)) {
+
+				// check for previous transaction
+				if (transaction == null) {
+					throw new ServiceException("payment.error");
+				}
+
+				payment.getPaymentMetaData().put("PAYMENT_TOKEN", transaction.getTransactionDetails().get("PAYMENT_TOKEN"));
+
+			}
+
 			modelOrder.setShoppingCartCode(shoppingCartCode);
 			modelOrder.setPaymentModuleCode(order.getPaymentModule());
 			payment.setModuleName(order.getPaymentModule());
@@ -1349,7 +1360,7 @@ public class OrderFacadeImpl implements OrderFacade {
 	}
 
 	@Async
-	private void notify(Order order, Customer customer, MerchantStore store, Language language, Locale locale) throws Exception {
+	void notify(Order order, Customer customer, MerchantStore store, Language language, Locale locale) throws Exception {
 
 		// send order confirmation email to customer
 		emailTemplatesUtils.sendOrderEmail(customer.getEmailAddress(), customer, order, locale,

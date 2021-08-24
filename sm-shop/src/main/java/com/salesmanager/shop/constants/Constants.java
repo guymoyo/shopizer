@@ -113,6 +113,8 @@ public class Constants {
 	public final static int MAX_ORDERS_PAGE = 5;
 	public final static String SUCCESS = "success";
 	public final static String CANCEL = "cancel";
+
+	public final static String SUCCES = "SUCCES";
 	
 	public final static String START = "start";
 	public final static String MAX = "max";
@@ -121,6 +123,8 @@ public class Constants {
 	public final static String MONTHS_OF_YEAR_CACHE_KEY = "MONTHS_OF_YEAR_CACHE_KEY";
 	
 	public final static String INIT_TRANSACTION_KEY = "init_transaction";
+
+	public final static String PAYMENT_VERIFIED_KEY = "init_transaction";
 
     public final static String LINK_CODE = "LINK_CODE";
     

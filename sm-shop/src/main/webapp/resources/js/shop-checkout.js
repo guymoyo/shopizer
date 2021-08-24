@@ -401,6 +401,11 @@ function setPaymentModule(module) {
 		$('#paymentMethodType').attr("value", 'CREDITCARD');
 		
 	}
+	else if(module.indexOf('cinetpay') >= 0) {
+		$('#paymentMethodType').val('CINETPAY');
+		$('#paymentMethodType').attr("value", 'CINETPAY');
+
+	}
 	else {
 		pType = pType.toUpperCase();
 		console.log('Other type - ' + pType);

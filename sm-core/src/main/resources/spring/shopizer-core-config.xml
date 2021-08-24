@@ -50,7 +50,7 @@
 	<!--Get the secret key from JNDI -->
 
 	<!-- don't need the secret key out of the box, unless you decide to have 
-		the key stored in a remote jndi context <jee:jndi-lookup id="secretKey" jndi-name="java:comp/env/secretKey" 
+		the key stored in a remote jndi context <jee:jndi-lookup orderId="secretKey" jndi-name="java:comp/env/secretKey"
 		/> -->
 
 	<!-- JDBC User -->

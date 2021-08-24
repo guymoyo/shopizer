@@ -27,11 +27,15 @@ public interface PaymentModule {
 	 * @param payment Payment
 	 * @param configuration IntegrationConfiguration
 	 * @param module IntegrationModule
-	 * @return Transaction a Transaction
+	 * @param country
+	 * @param firstName
+	 * @param lastName
+	 * @param id
+     * @return Transaction a Transaction
 	 * @throws IntegrationException IntegrationException
 	 */
 	public Transaction initTransaction(
-			MerchantStore store, Customer customer, BigDecimal amount, Payment payment, IntegrationConfiguration configuration, IntegrationModule module)
+            MerchantStore store, Customer customer, BigDecimal amount, Payment payment, IntegrationConfiguration configuration, IntegrationModule module, String country, String firstName, String lastName, Long id)
 			throws IntegrationException;
 	
 	public Transaction authorize(

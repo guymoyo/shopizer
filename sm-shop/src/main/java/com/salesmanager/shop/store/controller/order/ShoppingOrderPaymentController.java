@@ -12,17 +12,19 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
+import com.salesmanager.core.business.modules.integration.payment.impl.CinetPayPayment;
+import com.salesmanager.core.business.modules.integration.payment.impl.cinetpay.CinetPayResponse;
+import com.salesmanager.core.business.modules.integration.payment.impl.cinetpay.VerificationRequest;
+import com.salesmanager.core.business.modules.integration.payment.impl.cinetpay.VerificationResponse;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.Validate;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import com.salesmanager.core.business.modules.integration.payment.impl.PayPalExpressCheckoutPayment;
 import com.salesmanager.core.business.modules.integration.payment.impl.Stripe3Payment;
@@ -45,6 +47,8 @@ import com.salesmanager.shop.model.order.ShopOrder;
 import com.salesmanager.shop.store.controller.AbstractController;
 import com.salesmanager.shop.store.controller.order.facade.OrderFacade;
 import com.salesmanager.shop.store.controller.shoppingCart.facade.ShoppingCartFacade;
+import org.springframework.web.client.RestClientException;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * Initialization of different payment services
@@ -185,13 +189,61 @@ public class ShoppingOrderPaymentController extends AbstractController {
 						PaypalPayment payment = new PaypalPayment();
 						payment.setCurrency(store.getCurrency());
 						Transaction transaction = p.initTransaction(store, null, orderTotalSummary.getTotal(), null,
-								config, integrationModule);
+								config, integrationModule, order.getCustomer().getBilling().getCountry(), order.getCustomer().getFirstName(), order.getCustomer().getLastName(), order.getId());
+
+						transactionService.create(transaction);
+
+						super.setSessionAttribute(Constants.INIT_TRANSACTION_KEY, transaction, request);
+
+						StringBuilder urlAppender = new StringBuilder();
+
+						urlAppender.append(coreConfiguration.getProperty("PAYPAL_EXPRESSCHECKOUT_REGULAR"));
+
+						urlAppender.append(transaction.getTransactionDetails().get("PAYMENT_TOKEN"));
+
+						StringBuilder url = new StringBuilder()
+								.append(coreConfiguration.getProperty("PAYPAL_EXPRESSCHECKOUT_SANDBOX"))
+								.append(urlAppender.toString());
+						ajaxResponse.addEntry("url", url.toString());
+
+						// keep order in session when user comes back from pp
+						super.setSessionAttribute(Constants.ORDER, order, request);
+
+						ajaxResponse.setStatus(AjaxResponse.RESPONSE_OPERATION_COMPLETED);
+						ajaxResponse.setDataMap(transaction.getTransactionDetails());
+
+					} catch (Exception e) {
+						ajaxResponse.setStatus(AjaxResponse.RESPONSE_STATUS_FAIURE);
+					}
+				} else if (paymentmethod.equals("CINETPAY")) {
+
+					try {
+
+						// check if order is already pay
+						if(transactionService.isOrderAlreadyPay(order.getId())) {
+							return "redirect:" + Constants.SHOP_URI + "/order/commitPreAuthorized.html";
+						}
+
+						String moduleCode = paymentmethod.toLowerCase();
+						PaymentModule module = paymentService.getPaymentModule(moduleCode);
+						CinetPayPayment p = (CinetPayPayment) module;
+
+						PaypalPayment payment = new PaypalPayment();
+						payment.setCurrency(store.getCurrency());
+
+						Transaction transaction = p.initTransaction(store, null, orderTotalSummary.getTotal(), payment,
+								config, integrationModule, order.getCustomer().getBilling().getCountry(),
+								order.getCustomer().getFirstName(), order.getCustomer().getLastName(), order.getId());
 
 						transactionService.create(transaction);
 
 						super.setSessionAttribute(Constants.INIT_TRANSACTION_KEY, transaction, request);
 						// keep order in session when user comes back from pp
 						super.setSessionAttribute(Constants.ORDER, order, request);
+
+						StringBuilder url = new StringBuilder();
+						url.append(transaction.getTransactionDetails().get("PAYMENT_URL"));
+						ajaxResponse.addEntry("url", url.toString());
 
 						ajaxResponse.setStatus(AjaxResponse.RESPONSE_OPERATION_COMPLETED);
 						ajaxResponse.setDataMap(transaction.getTransactionDetails());
@@ -217,6 +269,45 @@ public class ShoppingOrderPaymentController extends AbstractController {
 	public String returnPayPalPayment(@PathVariable String code, HttpServletRequest request,
 			HttpServletResponse response, Locale locale) throws Exception {
 		if (Constants.SUCCESS.equals(code)) {
+			return "redirect:" + Constants.SHOP_URI + "/order/commitPreAuthorized.html";
+		} else {// process as cancel
+			return "redirect:" + Constants.SHOP_URI + "/order/checkout.html";
+		}
+	}
+
+
+	@RequestMapping(value = { "/cinetpay/notify" }, method = RequestMethod.POST)
+	public ResponseEntity cinetpayNotification(@RequestParam("cpm_trans_id") String cpm_trans_id,
+													 @RequestParam("cpm_site_id") String cpm_site_id ){
+
+		LOGGER.info("notify retour, cpm_trans_id:   "+cpm_trans_id+"    cpm_site_id   "+cpm_site_id);
+
+		return new ResponseEntity(HttpStatus.NO_CONTENT);
+	}
+
+	// cancel - success cinetpay order
+	@RequestMapping(value = { "/cinetpay/checkout.html" }, method = RequestMethod.GET)
+	public String returnCinetPayPayment(@RequestParam("payment_token") String paymentToken, HttpServletRequest request,
+										HttpServletResponse response, Locale locale){
+
+		VerificationRequest verificationRequest = new VerificationRequest();
+		verificationRequest.setToken(paymentToken);
+		verificationRequest.setApikey(CinetPayPayment.API_KEY);
+		verificationRequest.setSite_id(CinetPayPayment.SITE_ID);
+
+		RestTemplate restTemplate = new RestTemplate();
+		VerificationResponse verificationResponse = null;
+		Boolean success = false;
+		try {
+			verificationResponse = restTemplate.postForObject("https://api-checkout.cinetpay.com/v2/payment/check", verificationRequest, VerificationResponse.class);
+			if (Constants.SUCCES.equals(verificationResponse.getMessage())){
+				success = true;
+			}
+		} catch (RestClientException e) {
+			e.printStackTrace();
+		}
+
+		if (success) {
 			return "redirect:" + Constants.SHOP_URI + "/order/commitPreAuthorized.html";
 		} else {// process as cancel
 			return "redirect:" + Constants.SHOP_URI + "/order/checkout.html";
