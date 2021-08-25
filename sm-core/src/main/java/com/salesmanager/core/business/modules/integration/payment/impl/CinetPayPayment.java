@@ -54,8 +54,8 @@ public class CinetPayPayment implements PaymentModule {
         cinetPayRequest.setDescription(transactionId);
         cinetPayRequest.setCustomer_name(lastName);
         cinetPayRequest.setCustomer_surname(firstName);
-        cinetPayRequest.setNotify_url("https://djome.com/shop/cinetpay/notify");
-        cinetPayRequest.setReturn_url("https://djome.com/shop/cinetpay/checkout.html");
+        cinetPayRequest.setNotify_url("https://www.djome.com/shop/cinetpay/notify");
+        cinetPayRequest.setReturn_url("https://www.djome.com/shop/cinetpay/checkout.html");
         cinetPayRequest.setCurrency(getCurrency(country));
 
 

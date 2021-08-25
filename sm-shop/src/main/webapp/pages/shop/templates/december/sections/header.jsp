@@ -378,15 +378,12 @@ $(document).ready(function() {
                 <li><a href="<c:url value="/shop/"/>" class="dropdown-toggle"><s:message code="menu.home" text="Home"/></a></li>
                 <!-- Categories -->
                 <!-- mega menu style -->
-                <!--<li class="dropdown megaDropMenu">-->
-                <li class="dropdown">
-                  <a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="false"><s:message code="menu.catalogue-products" text="Products"/> <i class="fa fa-angle-down ml-5"></i></a>
-                  <ul class="dropdown-menu row">
+
                     <c:set var="code" value="${category.code}"/>
                     <c:forEach items="${requestScope.TOP_CATEGORIES}" var="category">
                     <c:if test="${category.visible}">
                     <li>
-                        <li class="<c:if test="${fn:length(category.children)>0}">dropdown-submenu</c:if> <sm:activeLink linkCode="${category.description.friendlyUrl}" activeReturnCode="active"/>"><a href="<c:url value="/shop/category/${category.description.friendlyUrl}.html"/><sm:breadcrumbParam categoryId="${category.id}"/>"><c:out value="${category.description.name}"/></a>
+                        <li class="<c:if test="${fn:length(category.children)>0}">dropdown-submenu</c:if> <sm:activeLink linkCode="${category.description.friendlyUrl}" activeReturnCode="active"/>"><a href="<c:url value="/shop/category/${category.description.friendlyUrl}.html"/><sm:breadcrumbParam categoryId="${category.id}"/>"><c:out value="${category.description.name}"/> </a>
                         <c:if test="${fn:length(category.children)>0}">
                         		<ul class="dropdown-menu">
 								<c:forEach items="${category.children}" var="child">
@@ -401,9 +398,6 @@ $(document).ready(function() {
                     </c:if>
                     </c:forEach>
 
-                    
-                  </ul>
-                </li>
                   
                 <c:if test="${requestScope.CONFIGS['displayPagesMenu']==true}">
                 <li class="dropdown">
