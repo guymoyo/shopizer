@@ -3,6 +3,7 @@ package com.salesmanager.core.modules.integration.payment.model;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.salesmanager.core.business.exception.ServiceException;
 import com.salesmanager.core.model.customer.Customer;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.order.Order;
@@ -49,7 +50,7 @@ public interface PaymentModule {
 	
 	public Transaction authorizeAndCapture(
 			MerchantStore store, Customer customer, List<ShoppingCartItem> items, BigDecimal amount, Payment payment, IntegrationConfiguration configuration, IntegrationModule module)
-			throws IntegrationException;
+            throws ServiceException;
 	
 	public Transaction refund(
 			boolean partial, MerchantStore store, Transaction transaction, Order order, BigDecimal amount, IntegrationConfiguration configuration, IntegrationModule module)

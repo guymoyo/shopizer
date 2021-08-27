@@ -54,7 +54,7 @@ Templates definition
 				</td>
 				<td style="border: none !important;">	
 				<label> 
-					{{description}} - {{optionPriceText}}
+					{{description}}: {{optionPriceText}}
 				</label>
 				</td>
 				</tr>
@@ -501,7 +501,7 @@ function bindActions() {
 			log('cinetpay ' + $('input[name=paymentMethodType]').val());
 			$('#paymentMethodType').attr("value", 'CINETPAY');
 			log('Payment method type -> ' + $('input[name=paymentMethodType]').val());
-			initPayment('CINETPAY');
+			initPaymentCinetPay('CINETPAY');
 		}
 		else {
 			//submit form
@@ -570,6 +570,68 @@ function initPayment(paymentSelection) {
 
 	});
 	
+}
+
+function initPaymentCinetPay(paymentSelection) {
+	var url = '<c:url value="/shop/order/payment/init/"/>' + paymentSelection + '.html';
+	var data = $(checkoutFormId).serialize();
+	$.ajax({
+		type: 'POST',
+		url: url,
+		data: data,
+		cache: false,
+		dataType: 'json',
+		success: function(response){
+			//$('#submitOrder').enable();
+			hideSMLoading('#pageContainer');
+			var resp = response.response;
+			var status = resp.status;
+			//console.log(status);
+			if(status==0 || status ==9999) {
+
+				CinetPay.setSignatureData({
+					amount: parseInt(resp.amount),
+					trans_id: resp.trans_id,
+					currency: resp.currency,
+					//designation: resp.designation,
+					//custom: resp.cpm_custom,
+				});
+				CinetPay.getSignature();
+
+			} else if(status==-2) {//validation issues
+
+				//console.log(resp.validations);
+				var globalMessage = '';
+				for(var i = 0; i< resp.validations.length; i++) {
+					var fieldName = resp.validations[i].field;
+					var message = resp.validations[i].message;
+					//console.log(fieldName +  ' - ' + message);
+					//query for the field
+					var f = $(document.getElementById('error-'+fieldName));
+					if(f) {
+						f.html(message);
+					}
+					globalMessage = globalMessage + message + '<br/>';
+
+				}
+
+				showResponseErrorMessage(globalMessage);
+
+
+			} else {
+				//console.log('Wrong status ' + status);
+				showResponseErrorMessage('<s:message code="error.code.99" text="An error message occured while trying to process the payment (99)"/>');
+
+			}
+		},
+		error: function(xhr, textStatus, errorThrown) {
+			hideSMLoading('#pageContainer');
+			//alert('error ' + errorThrown);
+			showResponseErrorMessage(errorThrown);
+		}
+
+	});
+
 }
 
 
@@ -1095,7 +1157,8 @@ function initPayment(paymentSelection) {
 			</div>
 		</div>
 		<!-- checkout-area end -->
-		
+
+
 		<!-- maps and geoloc, places -->
 		<c:if test="${googleMapsKey != ''}">
 		<script src="<c:url value="/resources/js/address-autocomplete.js" />"></script>
@@ -1117,3 +1180,38 @@ function initPayment(paymentSelection) {
 		  	  <script src="https://maps.googleapis.com/maps/api/js?key=<c:out value="${googleMapsKey}"/>&libraries=places&callback=googleInitialize"
 		        async defer></script>
 		</c:if>
+
+<script charset="utf-8"
+		src="https://www.cinetpay.com/cdn/seamless_sdk/latest/cinetpay.prod.min.js"
+		type="text/javascript">
+</script>
+
+<script >
+	(function() {
+	CinetPay.setConfig({
+		apikey: '13912947265fa65db347e7a4.83208927',
+		site_id: 479567
+		//notify_url: 'http://djome.com'
+	});
+
+	CinetPay.on('error', function (e) {
+		showResponseErrorMessage('<b>Error Echec paiement code:</b>' + e.code + '<br><b>Message:</b>:' + e.message);
+
+	});
+	CinetPay.on('paymentPending', function (e) {
+		//showResponseErrorMessage("Paiement en cours");
+	});
+	CinetPay.on('signatureCreated', function () {})
+	CinetPay.on('paymentSuccessfull', function (paymentInfo) {
+		if(typeof paymentInfo.lastTime != 'undefined'){
+			result_div.innerHTML = '';
+			if(paymentInfo.cpm_result == '00'){// lance le preconfirm
+				showResponseErrorMessage('Votre paiement a été validé avec succès : <br> Montant payé :'+paymentInfo.cpm_amount+'<br>');
+				location.href = "/shop/order/commitPreAuthorized.html";
+			}else{
+				showResponseErrorMessage('Une erreur est survenue :'+paymentInfo.cpm_error_message);
+			}
+		}
+	});
+	})();
+</script>

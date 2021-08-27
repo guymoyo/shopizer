@@ -102,7 +102,7 @@ response.setDateHeader ("Expires", -1);
      
     <!-- Cookie policy --> 
     <!-- https://www.osano.com/cookieconsent/download/ -->
-	<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
+	<%--<script src="https://cdn.jsdelivr.net/npm/cookieconsent@3/build/cookieconsent.min.js" data-cfasync="false"></script>
 			<script>
 			window.cookieconsent.initialise({
 			  "palette": {
@@ -121,7 +121,7 @@ response.setDateHeader ("Expires", -1);
 				    "href": "/shop/pages/terms-and-policy.html"
 			   }
 			});
-	 </script>
+	 </script>--%>
 	
 
 	    <c:if test="${requestScope.CONTENT['beforeCloseBody']!=null}">

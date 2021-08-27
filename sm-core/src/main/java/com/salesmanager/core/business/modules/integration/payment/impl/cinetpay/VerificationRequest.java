@@ -4,8 +4,8 @@ public class VerificationRequest {
 
 
     private String apikey;
-    private String site_id;
-    private String token;
+    private String cpm_site_id;
+    private String cpm_trans_id;
 
     public String getApikey() {
         return apikey;
@@ -15,19 +15,19 @@ public class VerificationRequest {
         this.apikey = apikey;
     }
 
-    public String getSite_id() {
-        return site_id;
+    public String getCpm_site_id() {
+        return cpm_site_id;
     }
 
-    public void setSite_id(String site_id) {
-        this.site_id = site_id;
+    public void setCpm_site_id(String cpm_site_id) {
+        this.cpm_site_id = cpm_site_id;
     }
 
-    public String getToken() {
-        return token;
+    public String getCpm_trans_id() {
+        return cpm_trans_id;
     }
 
-    public void setToken(String token) {
-        this.token = token;
+    public void setCpm_trans_id(String cpm_trans_id) {
+        this.cpm_trans_id = cpm_trans_id;
     }
 }

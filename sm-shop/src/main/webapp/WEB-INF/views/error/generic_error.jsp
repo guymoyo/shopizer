@@ -44,7 +44,8 @@ response.setDateHeader ("Expires", -1);
 			</tr>
 			<tr>
 				<td colspan="2">
-					<srong><c:out value="${stackError}"/></srong>
+					<img src="/resources/img/error.png" alt=""/>
+					<a href="/shop">Back to Home Page</a>
 				</td>
 			</tr>
 		</table>

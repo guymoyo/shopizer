@@ -495,10 +495,9 @@ public class ShoppingOrderController extends AbstractController {
 
             return "redirect:/shop/order/confirmation.html";
 
-        } catch(Exception e) {
+        } catch(ServiceException e) {
             LOGGER.error("Error while commiting order",e);
             throw e;
-
         }
 
     }

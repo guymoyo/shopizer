@@ -1,31 +1,6 @@
 package com.salesmanager.shop.store.controller.order;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-
-import javax.inject.Inject;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.validation.Valid;
-
 import com.salesmanager.core.business.modules.integration.payment.impl.CinetPayPayment;
-import com.salesmanager.core.business.modules.integration.payment.impl.cinetpay.CinetPayResponse;
-import com.salesmanager.core.business.modules.integration.payment.impl.cinetpay.VerificationRequest;
-import com.salesmanager.core.business.modules.integration.payment.impl.cinetpay.VerificationResponse;
-import org.apache.commons.collections4.CollectionUtils;
-import org.apache.commons.lang3.Validate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Controller;
-import org.springframework.validation.BeanPropertyBindingResult;
-import org.springframework.web.bind.annotation.*;
-
 import com.salesmanager.core.business.modules.integration.payment.impl.PayPalExpressCheckoutPayment;
 import com.salesmanager.core.business.modules.integration.payment.impl.Stripe3Payment;
 import com.salesmanager.core.business.services.payments.PaymentService;
@@ -47,8 +22,21 @@ import com.salesmanager.shop.model.order.ShopOrder;
 import com.salesmanager.shop.store.controller.AbstractController;
 import com.salesmanager.shop.store.controller.order.facade.OrderFacade;
 import com.salesmanager.shop.store.controller.shoppingCart.facade.ShoppingCartFacade;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
+import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.Validate;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.validation.BeanPropertyBindingResult;
+import org.springframework.web.bind.annotation.*;
+
+import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.validation.Valid;
+import java.util.*;
 
 /**
  * Initialization of different payment services
@@ -241,10 +229,6 @@ public class ShoppingOrderPaymentController extends AbstractController {
 						// keep order in session when user comes back from pp
 						super.setSessionAttribute(Constants.ORDER, order, request);
 
-						StringBuilder url = new StringBuilder();
-						url.append(transaction.getTransactionDetails().get("PAYMENT_URL"));
-						ajaxResponse.addEntry("url", url.toString());
-
 						ajaxResponse.setStatus(AjaxResponse.RESPONSE_OPERATION_COMPLETED);
 						ajaxResponse.setDataMap(transaction.getTransactionDetails());
 
@@ -286,14 +270,14 @@ public class ShoppingOrderPaymentController extends AbstractController {
 	}
 
 	// cancel - success cinetpay order
-	@RequestMapping(value = { "/cinetpay/checkout.html" }, method = RequestMethod.GET)
+	/*@RequestMapping(value = { "/cinetpay/checkout.html" }, method = RequestMethod.GET)
 	public String returnCinetPayPayment(@RequestParam("payment_token") String paymentToken, HttpServletRequest request,
 										HttpServletResponse response, Locale locale){
 
 		VerificationRequest verificationRequest = new VerificationRequest();
 		verificationRequest.setToken(paymentToken);
-		verificationRequest.setApikey(CinetPayPayment.API_KEY);
-		verificationRequest.setSite_id(CinetPayPayment.SITE_ID);
+		verificationRequest.setApikey(CinetPayPaymentVewVersion.API_KEY);
+		verificationRequest.setSite_id(CinetPayPaymentVewVersion.SITE_ID);
 
 		RestTemplate restTemplate = new RestTemplate();
 		VerificationResponse verificationResponse = null;
@@ -312,6 +296,6 @@ public class ShoppingOrderPaymentController extends AbstractController {
 		} else {// process as cancel
 			return "redirect:" + Constants.SHOP_URI + "/order/checkout.html";
 		}
-	}
+	}*/
 
 }

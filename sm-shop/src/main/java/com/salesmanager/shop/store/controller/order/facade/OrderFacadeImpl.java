@@ -546,7 +546,10 @@ public class OrderFacadeImpl implements OrderFacade {
 					throw new ServiceException("payment.error");
 				}
 
-				payment.getPaymentMetaData().put("PAYMENT_TOKEN", transaction.getTransactionDetails().get("PAYMENT_TOKEN"));
+				if(payment.getPaymentMetaData()==null) {
+					payment.setPaymentMetaData(new HashMap<>());
+				}
+				payment.getPaymentMetaData().put("trans_id", transaction.getTransactionDetails().get("trans_id"));
 
 			}
 

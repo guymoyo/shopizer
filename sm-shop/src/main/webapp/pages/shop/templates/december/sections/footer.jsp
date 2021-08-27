@@ -14,6 +14,13 @@ response.setDateHeader ("Expires", -1);
  
 <%@page contentType="text/html"%>
 <%@page pageEncoding="UTF-8"%>
+<div class="container">
+	<div class="col-lg-12 col-sm-12 col-xs-12 vertical-align text-center">
+		<c:if test="${requestScope.CONTENT['footerText']!=null}">
+			<sm:pageContent contentCode="footerText"/>
+		</c:if>
+	</div>
+</div>
 
 		<!-- footer-area-start -->
 		<div class="footer-area ptb-80">
