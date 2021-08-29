@@ -444,6 +444,11 @@ function bindActions() {
 	$("#submitOrder").click(function(e) {
 		e.preventDefault();//do not submit form
 
+		if ($('.billing-country-list').val() != ''){
+			showErrorMessage("Veuillez selectioner votre pays!!!");
+		}
+
+
 		//Set state to default
 		$('#deliveryStateProvince').val("default");
 		$('#billingStateProvince').val("default");
@@ -1204,7 +1209,6 @@ function initPaymentCinetPay(paymentSelection) {
 	CinetPay.on('signatureCreated', function () {})
 	CinetPay.on('paymentSuccessfull', function (paymentInfo) {
 		if(typeof paymentInfo.lastTime != 'undefined'){
-			result_div.innerHTML = '';
 			if(paymentInfo.cpm_result == '00'){// lance le preconfirm
 				showResponseErrorMessage('Votre paiement a été validé avec succès : <br> Montant payé :'+paymentInfo.cpm_amount+'<br>');
 				location.href = "/shop/order/commitPreAuthorized.html";

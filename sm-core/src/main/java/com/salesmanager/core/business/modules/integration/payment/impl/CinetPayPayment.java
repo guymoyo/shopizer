@@ -1,9 +1,10 @@
 package com.salesmanager.core.business.modules.integration.payment.impl;
 
-import com.salesmanager.core.business.modules.integration.payment.impl.cinetpay.CinetPayRequest;
-import com.salesmanager.core.business.modules.integration.payment.impl.cinetpay.CinetPayResponse;
-import com.salesmanager.core.business.modules.integration.payment.impl.cinetpay.VerificationRequest;
-import com.salesmanager.core.business.modules.integration.payment.impl.cinetpay.VerificationResponse;
+import com.mashape.unirest.http.HttpResponse;
+import com.mashape.unirest.http.JsonNode;
+import com.mashape.unirest.http.Unirest;
+import com.mashape.unirest.http.exceptions.UnirestException;
+import com.salesmanager.core.business.exception.ServiceException;
 import com.salesmanager.core.model.customer.Customer;
 import com.salesmanager.core.model.merchant.MerchantStore;
 import com.salesmanager.core.model.order.Order;
@@ -18,8 +19,7 @@ import com.salesmanager.core.modules.integration.IntegrationException;
 import com.salesmanager.core.modules.integration.payment.model.PaymentModule;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.web.client.RestClientException;
-import org.springframework.web.client.RestTemplate;
+import org.json.JSONObject;
 
 import java.math.BigDecimal;
 import java.util.Date;
@@ -45,32 +45,7 @@ public class CinetPayPayment implements PaymentModule {
         }
         long amountToPay = amount.multiply(priceDollars).longValue();
         String transactionId = RandomStringUtils.randomAlphabetic(10);
-
-        CinetPayRequest cinetPayRequest = new CinetPayRequest();
-        cinetPayRequest.setAmount(amountToPay);
-        cinetPayRequest.setApikey(API_KEY);
-        cinetPayRequest.setSite_id(SITE_ID);
-        cinetPayRequest.setTransaction_id(transactionId);
-        cinetPayRequest.setDescription(transactionId);
-        cinetPayRequest.setCustomer_name(lastName);
-        cinetPayRequest.setCustomer_surname(firstName);
-        cinetPayRequest.setNotify_url("https://www.djome.com/shop/cinetpay/notify");
-        cinetPayRequest.setReturn_url("https://www.djome.com/shop/cinetpay/checkout.html");
-        cinetPayRequest.setCurrency(getCurrency(country));
-
-
-        CinetPayResponse paymentInitResp = null;
-        try {
-            RestTemplate restTemplate = new RestTemplate();
-            paymentInitResp = restTemplate.postForObject("https://api-checkout.cinetpay.com/v2/payment", cinetPayRequest, CinetPayResponse.class);
-        } catch (RestClientException e) {
-            IntegrationException te = new IntegrationException(
-                    "Can't process cinetpay, try later");
-            te.setExceptionType(IntegrationException.TRANSACTION_EXCEPTION);
-            te.setMessageCode("message.payment.error");
-            te.setErrorCode(IntegrationException.TRANSACTION_EXCEPTION);
-            throw te;
-        }
+        String currency = getCurrency(country);
 
         Transaction transaction = new Transaction();
         transaction.setAmount(amount);
@@ -79,12 +54,12 @@ public class CinetPayPayment implements PaymentModule {
         transaction.setPaymentType(PaymentType.CINETPAY);
 
         //transaction.setDetails(String.valueOf(orderId));
-        transaction.getTransactionDetails().put("transactionId", transactionId);
         transaction.getTransactionDetails().put("customer_firstname", firstName);
         transaction.getTransactionDetails().put("customer_lastname", lastName);
         transaction.getTransactionDetails().put("customer_country", country);
-        transaction.getTransactionDetails().put("PAYMENT_TOKEN", paymentInitResp.getData().getPayment_token());
-        transaction.getTransactionDetails().put("PAYMENT_URL", paymentInitResp.getData().getPayment_url());
+        transaction.getTransactionDetails().put("currency", currency);
+        transaction.getTransactionDetails().put("amount", String.valueOf(amountToPay));
+        transaction.getTransactionDetails().put("trans_id", transactionId);
 
         return transaction;
     }
@@ -100,53 +75,66 @@ public class CinetPayPayment implements PaymentModule {
     }
 
     @Override
-    public Transaction authorizeAndCapture(MerchantStore store, Customer customer, List<ShoppingCartItem> items, BigDecimal amount, Payment payment, IntegrationConfiguration configuration, IntegrationModule module) throws IntegrationException {
+    public Transaction authorizeAndCapture(MerchantStore store, Customer customer, List<ShoppingCartItem> items, BigDecimal amount, Payment payment, IntegrationConfiguration configuration, IntegrationModule module) throws ServiceException {
 
-        String paymentToken = payment.getPaymentMetaData().get("PAYMENT_TOKEN");
+        String trans_id = payment.getPaymentMetaData().get("trans_id");
 
-        if(StringUtils.isBlank(paymentToken)) {
+        if(StringUtils.isBlank(trans_id)) {
             IntegrationException te = new IntegrationException(
-                    "Can't process CinetPay, missing  token");
+                    "Can't process CinetPay, missing  trans_id");
             te.setExceptionType(IntegrationException.TRANSACTION_EXCEPTION);
             te.setMessageCode("message.payment.error");
             te.setErrorCode(IntegrationException.TRANSACTION_EXCEPTION);
             throw te;
         }
 
-        VerificationRequest verificationRequest = new VerificationRequest();
-        verificationRequest.setToken(paymentToken);
-        verificationRequest.setApikey(CinetPayPayment.API_KEY);
-        verificationRequest.setSite_id(CinetPayPayment.SITE_ID);
 
-        RestTemplate restTemplate = new RestTemplate();
-        VerificationResponse verificationResponse = null;
-
+        Unirest.setTimeouts(0, 0);
+        HttpResponse<JsonNode> response;
         try {
-            verificationResponse = restTemplate.postForObject("https://api-checkout.cinetpay.com/v2/payment/check", verificationRequest, VerificationResponse.class);
-            if (!"SUCCES".equals(verificationResponse.getMessage())){
-                IntegrationException te = new IntegrationException(
+            response = Unirest.post("https://api.cinetpay.com/v1/?method=checkPayStatus")
+                    .field("apikey", API_KEY)
+                    .field("cpm_site_id", SITE_ID)
+                    .field("cpm_trans_id", trans_id)
+                    .asJson();
+        } catch (UnirestException e) {
+            ServiceException te = new ServiceException(
+                    "Can't process CinetPay, error cinetpay");
+            te.setExceptionType(ServiceException.EXCEPTION_PAYMENT_DECLINED);
+            te.setMessageCode("message.payment.error");
+            throw te;
+        }
+
+        JSONObject jsonObjectBody = response.getBody().getObject();
+
+        JSONObject transactionJsonObj = jsonObjectBody.getJSONObject("transaction");
+
+        String cpm_result = transactionJsonObj.getString("cpm_result");
+        String cpm_amount = transactionJsonObj.getString("cpm_amount");
+
+        if(!"00".equals(cpm_result)) {
+                ServiceException te = new ServiceException(
                         "Can't process CinetPay, error cinetpay");
-                te.setExceptionType(IntegrationException.TRANSACTION_EXCEPTION);
+                te.setExceptionType(ServiceException.EXCEPTION_PAYMENT_DECLINED);
                 te.setMessageCode("message.payment.error");
-                te.setErrorCode(IntegrationException.TRANSACTION_EXCEPTION);
                 throw te;
             }
-        } catch (RestClientException e) {
-            IntegrationException te = new IntegrationException(
-                    "Can't process CinetPay, error cinetpay");
-            te.setExceptionType(IntegrationException.TRANSACTION_EXCEPTION);
-            te.setMessageCode("message.payment.error");
-            te.setErrorCode(IntegrationException.TRANSACTION_EXCEPTION);
-            throw te;
-        }
+
+            if(amount.compareTo(BigDecimal.valueOf(Long.valueOf(cpm_amount)))!=0) {
+                ServiceException te = new ServiceException(
+                        "Can't process CinetPay, error cinetpay");
+                te.setExceptionType(ServiceException.EXCEPTION_PAYMENT_DECLINED);
+                te.setMessageCode("message.payment.error");
+                throw te;
+            }
 
         Transaction transaction = new Transaction();
         transaction.setAmount(amount);
         transaction.setTransactionDate(new Date());
         transaction.setTransactionType(TransactionType.AUTHORIZECAPTURE);
         transaction.setPaymentType(PaymentType.CINETPAY);
-        transaction.getTransactionDetails().put("PAYMENT_TOKEN", paymentToken);
-        transaction.setDetails(paymentToken);
+        transaction.getTransactionDetails().put("trans_id", trans_id);
+        transaction.getTransactionDetails().put("cinitpaytransaction", transactionJsonObj.toString());
 
         return transaction;
     }
@@ -157,24 +145,27 @@ public class CinetPayPayment implements PaymentModule {
     }
 
     private String getCurrency(String country) {
-        if(country=="CM") {
+        if("CM".equals(country)) {
             return "XAF";
         }
-        if(country=="BF") {
+        if("BF".equals(country)) {
             return "XOF";
         }
-        if(country=="CI") {
+        if("CI".equals(country)) {
             return "XOF";
         }
-        if(country=="ML") {
+        if("ML".equals(country)) {
             return "XOF";
         }
-        if(country=="SN") {
+        if("SN".equals(country)) {
             return "XOF";
         }
-        if(country=="TG") {
+        if("TG".equals(country)) {
             return "XOF";
         }
+        /*if("CD".equals(country)) {
+            return "CDF";
+        }*/
         return "XAF";
     }
 }
